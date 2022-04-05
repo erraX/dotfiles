@@ -1,0 +1,72 @@
+# opens iTerm2
+# alt - return : "${HOME}"/.config/yabai/scripts/open_iterm2.sh
+
+# Show system statistics
+# fn + lalt - 1 : "${HOME}"/.config/yabai/scripts/show_cpu.sh
+# fn + lalt - 2 : "${HOME}"/.config/yabai/scripts/show_mem.sh
+# fn + lalt - 3 : "${HOME}"/.config/yabai/scripts/show_bat.sh
+# fn + lalt - 4 : "${HOME}"/.config/yabai/scripts/show_disk.sh fn + lalt - 5 : "${HOME}"/.config/yabai/scripts/show_song.sh
+
+# Navigation
+shift + alt + cmd + ctrl - a : yabai -m window --focus west
+shift + alt + cmd + ctrl - s : yabai -m window --focus south
+shift + alt + cmd + ctrl - w : yabai -m window --focus north
+shift + alt + cmd + ctrl - d : yabai -m window --focus east
+
+# Moving windows
+shift + alt + cmd + ctrl - h : yabai -m window --warp west
+shift + alt + cmd + ctrl - j : yabai -m window --warp south
+shift + alt + cmd + ctrl - k : yabai -m window --warp north
+shift + alt + cmd + ctrl - l : yabai -m window --warp east
+
+# Focus previous space by mission-control index if one exists, otherwise focus the last space
+shift + alt + cmd + ctrl - 1 : yabai -m space --focus prev || yabai -m space --focus last
+# Focus next space by mission-control index if one exists, otherwise focus the first space
+shift + alt + cmd + ctrl - 2 : yabai -m space --focus next || yabai -m space --focus first
+
+shift + alt + cmd + ctrl - t : yabai -m space --create
+
+
+# Move focus container to workspace
+rshift - 1 : yabai -m window --space 1;
+rshift - 2 : yabai -m window --space 2;
+rshift - 3 : yabai -m window --space 3;
+rshift - 4 : yabai -m window --space 4;
+rshift - 5 : yabai -m window --space 5;
+rshift - 6 : yabai -m window --space 6;
+
+# Focus space
+
+# Resize windows
+lctrl + alt - h : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+lctrl + alt - j : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+lctrl + alt - k : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-49
+lctrl + alt - l : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
+
+# Equalize size of windows
+shift + alt + cmd + ctrl - b : yabai -m space --balance
+
+# Enable / Disable gaps in current workspace
+# lctrl + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
+
+# Rotate windows clockwise and anticlockwise
+# alt - r         : yabai -m space --rotate 270
+shift + alt + cmd + ctrl - r : yabai -m space --rotate 90
+shift + alt + ctrl + cmd - f : yabai -m window --toggle zoom-fullscreen
+
+# Rotate on X and Y Axis
+shift + alt - x : yabai -m space --mirror x-axis
+shift + alt - y : yabai -m space --mirror y-axis
+
+# Float / Unfloat window
+shift + alt + ctrl + cmd - space : yabai -m window --toggle float
+
+# Restart Yabai
+shift + lctrl + alt - r : \
+    /usr/bin/env osascript <<< \
+        "display notification \"Restarting Yabai\" with title \"Yabai\""; \
+    launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
