@@ -1,0 +1,32 @@
+{
+  "Console log": {
+    "prefix": "conl",
+    "body": ["console.log($1);"],
+    "description": "console.log(...)"
+  },
+  "Vue Jest snapshot spec": {
+    "prefix": "vtest",
+    "description": "Create a Jest snapshot test for a Vue SFC using @vue/test-utils mount",
+    "body": [
+      "import { mount } from '@vue/test-utils';",
+      "import ${1:ContactsList} from '${2:./ContactsList.vue}';",
+      "",
+      "const createWrapper = (props = {}, options = {}) => {",
+      "  const wrapper = mount(${1:ContactsList}, {",
+      "    props,",
+      "    ...options,",
+      "  });",
+      "",
+      "  return { wrapper };",
+      "};",
+      "",
+      "describe('${3:${1:ContactsList}}', (): void => {",
+      "  it('${4:should render correctly}', (): void => {",
+      "    const { wrapper } = createWrapper();",
+      "    expect(wrapper.element).toMatchSnapshot();",
+      "  });",
+      "});"
+    ]
+  }
+}
+
