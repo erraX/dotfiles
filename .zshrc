@@ -32,6 +32,7 @@ zinit cdreplay -q
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_COMPLETION_TRIGGER=';;'
 
+alias sth="sh ~/.config/themes/theme_switcher.sh"
 alias vi=nvim
 alias src='source ~/.zshrc'
 alias a=ls
