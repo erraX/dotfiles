@@ -1052,8 +1052,8 @@ require('lazy').setup({
     'erraX/nvim-solarized',
     priority = 1001,
     config = function()
-      vim.o.background = 'dark'
-      vim.cmd.colorscheme 'solarized'
+      -- vim.o.background = 'dark'
+      -- vim.cmd.colorscheme 'solarized'
     end,
   },
   {
@@ -1265,3 +1265,5 @@ require('lazy').setup({
 
 require 'custom.keymap'
 require 'custom.options'
+
+require('custom.themes').setup_theme_watcher()
