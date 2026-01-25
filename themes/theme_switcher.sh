@@ -56,6 +56,22 @@ set_theme() {
       echo "No specific FZF theme for $theme"
       ;;
   esac
+
+  # Apply to lazygit
+  case "$theme" in
+    "solarized-dark")
+      echo "Switch lazygit theme to solarized dark"
+      cp "$HOME/.config/lazygit/config.solarized-dark.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
+    "quietlight")
+      echo "Switch lazygit theme to quietlight"
+      cp "$HOME/.config/lazygit/config.quietlight.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
+    *)
+      # Default case for unhandled themes
+      echo "No specific lazygit theme for $theme"
+      ;;
+  esac
   
   # For iTerm2, load a Color Preset (does NOT change the profile)
   if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
