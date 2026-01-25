@@ -1,0 +1,46 @@
+gui:
+  theme:
+    # Borders
+    activeBorderColor:
+      - "#268bd2"   # blue
+      - bold
+    inactiveBorderColor:
+      - "#073642"   # base02
+
+    # Panels / text
+    defaultFgColor:
+      - "#839496"   # base0
+    optionsTextColor:
+      - "#2aa198"   # cyan
+
+    # Selection / focus
+    selectedLineBgColor:
+      - "#073642"   # base02
+    selectedRangeBgColor:
+      - "#002b36"   # base03 (slightly darker)
+
+    # Git states
+    unstagedChangesColor:
+      - "#dc322f"   # red
+    cherryPickedCommitBgColor:
+      - "#073642"   # base02
+    cherryPickedCommitFgColor:
+      - "#859900"   # green
+
+    # Search highlight
+    searchingActiveBorderColor:
+      - "#b58900"   # yellow
+      - bold
+
+  # Optional: readable author colors on Solarized Dark
+  authorColors:
+    "*": "#839496"
+    "default": "#839496"
+    "A": "#268bd2"
+    "B": "#2aa198"
+    "C": "#859900"
+    "D": "#b58900"
+    "E": "#cb4b16"
+    "F": "#6c71c4"
+    "G": "#dc322f"
+    "H": "#d33682"

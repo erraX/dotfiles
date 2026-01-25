@@ -1,0 +1,44 @@
+gui:
+  theme:
+    # Borders
+    activeBorderColor:
+      - "#005fb8"   # Quiet Light-ish blue accent
+      - bold
+    inactiveBorderColor:
+      - "#c8c8c8"   # light grey borders
+
+    # Text / labels
+    defaultFgColor:
+      - "#333333"   # main text
+    optionsTextColor:
+      - "#005fb8"   # option hints / links
+
+    # Selection (list highlight)
+    selectedLineBgColor:
+      - "#e9e9e9"
+    selectedRangeBgColor:
+      - "#dedede"
+
+    # Git states
+    unstagedChangesColor:
+      - "#b00020"   # quiet red for unstaged
+    cherryPickedCommitBgColor:
+      - "#e9e9e9"
+    cherryPickedCommitFgColor:
+      - "#2e7d32"   # quiet green
+
+    # Search UI
+    searchingActiveBorderColor:
+      - "#b58900"   # quiet amber
+      - bold
+
+  # Optional: pleasant, readable author colors on light background
+  authorColors:
+    "*": "#333333"
+    "default": "#333333"
+    "A": "#005fb8"
+    "B": "#2e7d32"
+    "C": "#b00020"
+    "D": "#6e33ce"
+    "E": "#008080"
+    "F": "#b58900"
