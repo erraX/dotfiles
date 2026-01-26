@@ -43,6 +43,7 @@ alias du='du -h -d 2'
 alias tf='tail -f'
 alias lg='lazygit'
 alias kb='kubectl'
+alias rm='trash'
 
 # common directories
 alias wk='cd ~/workspace'
