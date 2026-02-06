@@ -3,7 +3,7 @@
 THEME_FILE="$HOME/.config/themes/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight")
+THEMES=("solarized-dark" "quietlight" "gruvbox")
 
 # Get current theme
 get_current_theme() {
@@ -29,6 +29,9 @@ set_theme() {
       "solarized-dark")
         tmux source-file "$HOME/.config/themes/tmux/solarized-dark.tmux"
         ;;
+      "gruvbox")
+        tmux source-file "$HOME/.config/themes/tmux/gruvbox.tmux"
+        ;;
       "quietlight")
         tmux source-file "$HOME/.config/themes/tmux/quietlight.tmux"
         ;;
@@ -43,6 +46,13 @@ set_theme() {
       cat "$HOME/.config/themes/fzf/solarized-dark.sh" > "$HOME/.config/themes/current_fzf_theme"
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/solarized-dark.sh"
+      ;;
+    "gruvbox")
+      echo "Switch fzf theme to gruvbox"
+      # Write to a file that will be sourced by .zshrc
+      cat "$HOME/.config/themes/fzf/gruvbox.sh" > "$HOME/.config/themes/current_fzf_theme"
+      # Also apply to current shell
+      source "$HOME/.config/themes/fzf/gruvbox.sh"
       ;;
     "quietlight")
       echo "Switch fzf theme to quietlight"
@@ -62,6 +72,10 @@ set_theme() {
     "solarized-dark")
       echo "Switch lazygit theme to solarized dark"
       cp "$HOME/.config/lazygit/config.solarized-dark.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
+    "gruvbox")
+      echo "Switch lazygit theme to gruvbox"
+      cp "$HOME/.config/lazygit/config.gruvbox.yml" "$HOME/.config/lazygit/config.yml"
       ;;
     "quietlight")
       echo "Switch lazygit theme to quietlight"

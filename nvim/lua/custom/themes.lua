@@ -28,6 +28,13 @@ M.themes = {
     vim.o.background = 'light'
     vim.cmd.colorscheme 'quietlight'
   end,
+  ['gruvbox'] = function()
+    require('gruvbox').setup {
+      contrast = 'soft',
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'gruvbox'
+  end,
   -- Add more themes as needed
 }
 

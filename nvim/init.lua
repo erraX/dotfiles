@@ -1049,6 +1049,15 @@ require('lazy').setup({
     },
   },
   {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = function()
+      require('gruvbox').setup {
+        contrast = 'soft', -- can be "hard", "soft" or empty string
+      }
+    end,
+  },
+  {
     'erraX/nvim-solarized',
     priority = 1001,
     config = function()
@@ -1267,3 +1276,4 @@ require 'custom.keymap'
 require 'custom.options'
 
 require('custom.themes').setup_theme_watcher()
+

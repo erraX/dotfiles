@@ -215,3 +215,4 @@ export PATH="/Users/mni/.codeium/windsurf/bin:$PATH"
 # export NO_PROXY="localhost,127.0.0.1"
 
 export VAULT_ADDR="https://vault.booking.com"
+export DISABLE_AUTOUPDATER=1
