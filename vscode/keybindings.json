@@ -1,0 +1,69 @@
+[
+  {
+    "key": "ctrl+tab",
+    "command": "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+    "when": "!activeEditorGroupEmpty",
+  },
+  {
+    "key": "ctrl+tab",
+    "command": "workbench.action.nextEditor",
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "-workbench.action.nextEditor",
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "workbench.action.previousEditor",
+  },
+  {
+    "key": "shift+cmd+[",
+    "command": "-workbench.action.previousEditor",
+  },
+  {
+    "key": "ctrl+shift+tab",
+    "command": "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup",
+    "when": "!activeEditorGroupEmpty",
+  },
+
+  // Explorer ------------------------------------------
+  // Enter to open file
+  {
+    "key": "enter",
+    "command": "-renameFile",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  {
+    "key": "enter",
+    "command": "list.select",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  // r to rename file
+  {
+    "key": "r",
+    "command": "renameFile",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  // Create file / folder
+  {
+    "key": "ctrl+n",
+    "command": "explorer.newFile",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "explorer.newFolder",
+    "when": "filesExplorerFocus && !inputFocus",
+  },
+  {
+    "key": "cmd+e",
+    "command": "workbench.view.explorer",
+    "when": "viewContainer.workbench.view.explorer.enabled"
+  },
+  {
+    "key": "shift+cmd+e",
+    "command": "-workbench.view.explorer",
+    "when": "viewContainer.workbench.view.explorer.enabled"
+  },
+  // Explorer ------------------------------------------
+]
