@@ -78,6 +78,7 @@ alias kyp='cd /Users/mni/workspace/booking/main_repo/projects/kypportal/kypporta
 alias hub='cd ~/workspace/booking/verification-hub/apps/verification-hub-webapp'
 alias wkw='cd ~/workspace/booking/verification-hub/apps/verification-workspace-webapp'
 alias idvcs='cd ~/workspace/booking/b-mfes-2/component-services/verification-frontend-idv-component-service'
+alias cc='claude'
 
 
 # alias cd
