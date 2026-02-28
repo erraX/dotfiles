@@ -1005,5 +1005,5 @@
   "editor.gotoLocation.multipleDefinitions": "goto",
   "vue.server.hybridMode": false,
   "editor.accessibilityPageSize": 300,
-  "workbench.colorTheme": "Gruvbox Dark Soft"
+  "workbench.colorTheme": "Quiet Light"
 }

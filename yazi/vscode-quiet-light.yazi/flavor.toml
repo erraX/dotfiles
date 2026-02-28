@@ -1,0 +1,168 @@
+# vim:fileencoding=utf-8
+# VS Code "Quiet Light"-inspired flavor for Yazi
+# Sources: VS Code quietlight-color-theme.json (editor/status/selection colors)
+
+# -----------------------------------------------------------------------------
+# App
+# -----------------------------------------------------------------------------
+[app]
+# Set terminal background (OSC 11 capable terminals)
+overall = { bg = "#F5F5F5" }
+
+# -----------------------------------------------------------------------------
+# Manager
+# -----------------------------------------------------------------------------
+[mgr]
+cwd            = { fg = "#705697",  }
+find_keyword   = { fg = "#9769DC", bold = true, underline = true }
+find_position  = { fg = "#4B69C6", bg = "reset", bold = true }
+
+# Markers (copied/cut/selected)
+marker_copied   = { fg = "#448C27", bg = "#448C27" }
+marker_cut      = { fg = "#AA3731", bg = "#AA3731" }
+marker_marked   = { fg = "#0FA8CD", bg = "#0FA8CD" }
+marker_selected = { fg = "#DAAA01", bg = "#DAAA01" }
+
+# Counts (numbers shown on markers)
+count_copied   = { fg = "#F5F5F5", bg = "#448C27", bold = true }
+count_cut      = { fg = "#F5F5F5", bg = "#AA3731", bold = true }
+count_selected = { fg = "#333333", bg = "#DAAA01", bold = true }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#705697" }
+
+# -----------------------------------------------------------------------------
+# Indicator bars (left side bars in panes)
+# -----------------------------------------------------------------------------
+[indicator]
+parent = { fg = "#8190A0", bg = "#C9D0D9" }
+current = { fg = "#705697", bg = "#EDEDF5" }
+preview = { fg = "#333333", bg = "#C9D0D9" }
+padding = { open = " ", close = " " }
+
+# -----------------------------------------------------------------------------
+# Tabs
+# -----------------------------------------------------------------------------
+[tabs]
+active   = { fg = "#F5F5F5", bg = "#705697", bold = true }
+inactive = { fg = "#705697", bg = "#EDEDF5" }
+sep_inner = { open = " ", close = " " }
+sep_outer = { open = " ", close = " " }
+
+# -----------------------------------------------------------------------------
+# Mode (normal/select/unset)
+# -----------------------------------------------------------------------------
+[mode]
+normal_main = { fg = "#F5F5F5", bg = "#705697", bold = true }
+normal_alt  = { fg = "#705697", bg = "#EDEDF5" }
+
+select_main = { fg = "#333333", bg = "#C4D9B1", bold = true }
+select_alt  = { fg = "#333333", bg = "#D3DBCD" }
+
+unset_main  = { fg = "#333333", bg = "#FFE055", bold = true }
+unset_alt   = { fg = "#333333", bg = "#FFFEE2" }
+
+# -----------------------------------------------------------------------------
+# Status bar
+# -----------------------------------------------------------------------------
+[status]
+overall = { fg = "#F5F5F5", bg = "#705697" }
+
+sep_left  = { open = " ", close = " " }
+sep_right = { open = " ", close = " " }
+
+perm_sep   = { fg = "#C9D0D9" }
+perm_type  = { fg = "#F5F5F5", bold = true }
+perm_read  = { fg = "#E4F6D4" }
+perm_write = { fg = "#FFEAEA" }
+perm_exec  = { fg = "#CADEB9" }
+
+progress_label  = { fg = "#F5F5F5", bold = true }
+progress_normal = { fg = "#F5F5F5", bg = "#4E3C69" }
+progress_error  = { fg = "#F5F5F5", bg = "#AA3731" }
+
+# -----------------------------------------------------------------------------
+# Which-key popup
+# -----------------------------------------------------------------------------
+[which]
+cols = 2
+mask = { bg = "#EDEDF5" }
+cand = { fg = "#4B69C6", bold = true }
+rest = { fg = "#6D705B" }
+desc = { fg = "#705697" }
+separator = " -> "
+separator_style = { fg = "#8190A0" }
+
+# -----------------------------------------------------------------------------
+# Confirm dialog
+# -----------------------------------------------------------------------------
+[confirm]
+border = { fg = "#705697" }
+title  = { fg = "#705697", bold = true }
+body   = { fg = "#333333" }
+list   = { fg = "#333333" }
+btn_yes = { fg = "#F5F5F5", bg = "#705697", bold = true }
+btn_no  = { fg = "#333333", bg = "#C9D0D9" }
+btn_labels = [" Yes ", " No "]
+
+# -----------------------------------------------------------------------------
+# Input
+# -----------------------------------------------------------------------------
+[input]
+border   = { fg = "#705697" }
+title    = { fg = "#333333", bold = true }
+value    = { fg = "#333333" }
+selected = { bg = "#C9D0D9" }
+
+# -----------------------------------------------------------------------------
+# Pick
+# -----------------------------------------------------------------------------
+[pick]
+border   = { fg = "#705697" }
+active   = { fg = "#705697", bold = true }
+inactive = { fg = "#6D705B" }
+
+# -----------------------------------------------------------------------------
+# Spotter
+# -----------------------------------------------------------------------------
+[spot]
+border   = { fg = "#705697" }
+title    = { fg = "#705697", bold = true }
+tbl_col  = { fg = "#4B69C6" }
+tbl_cell = { fg = "#333333", bg = "#C9D0D9" }
+
+# -----------------------------------------------------------------------------
+# Notify
+# -----------------------------------------------------------------------------
+[notify]
+title_info  = { fg = "#0FA8CD", bold = true }
+title_warn  = { fg = "#DAAA01", bold = true }
+title_error = { fg = "#AA3731", bold = true }
+
+# -----------------------------------------------------------------------------
+# Filetype coloring
+# -----------------------------------------------------------------------------
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "#0FA8CD" },
+
+  # Audio / Video
+  { mime = "{audio,video}/*", fg = "#DAAA01" },
+
+  # Archives
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#BC3FBC" },
+
+  # Documents
+  { mime = "application/{pdf,doc,rtf}", fg = "#448C27" },
+
+  # VFS states
+  { mime = "vfs/{absent,stale}", fg = "#6D705B" },
+
+  # Directories
+  { url = "*/", fg = "#4B69C6", bold = true },
+
+  # Fallback
+  { url = "*", fg = "#333333" },
+]

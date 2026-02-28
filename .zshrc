@@ -203,7 +203,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 # Added by Windsurf
-export PATH="/Users/mni/.codeium/windsurf/bin:$PATH"
+export PATH="/Users/mni/.codeium/windsurf/bin:/Users/mni/.local/bin:$PATH"
 
 # export ANTHROPIC_BASE_URL=http://localhost:5000
 # export CLAUDE_CODE_USE_BEDROCK=1
@@ -217,3 +217,11 @@ export PATH="/Users/mni/.codeium/windsurf/bin:$PATH"
 
 export VAULT_ADDR="https://vault.booking.com"
 export DISABLE_AUTOUPDATER=1
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
