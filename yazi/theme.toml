@@ -1,0 +1,4 @@
+[flavor]
+light  = "vscode-quiet-light"
+dark = "gruvbox-dark-soft"
+
