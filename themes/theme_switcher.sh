@@ -87,6 +87,23 @@ set_theme() {
       ;;
   esac
   
+  # Apply to kitty
+  case "$theme" in
+    "gruvbox")
+      echo "Switch kitty theme to gruvbox"
+      cp "$HOME/.config/kitty/themes/gruvbox-dark-soft.conf" "$HOME/.config/kitty/current_theme.conf"
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/gruvbox-dark-soft.conf" 2>/dev/null
+      ;;
+    "quietlight")
+      echo "Switch kitty theme to quietlight"
+      cp "$HOME/.config/kitty/themes/quiet-light.conf" "$HOME/.config/kitty/current_theme.conf"
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/quiet-light.conf" 2>/dev/null
+      ;;
+    *)
+      echo "No specific kitty theme for $theme"
+      ;;
+  esac
+
   # For iTerm2, load a Color Preset (does NOT change the profile)
   if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
     case "$theme" in
