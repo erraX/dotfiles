@@ -925,7 +925,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
@@ -1197,6 +1197,7 @@ require('lazy').setup({
         'markdown_inline',
         'query',
         'vue',
+        'python',
         'go',
         'vim',
         'vimdoc',
@@ -1276,4 +1277,3 @@ require 'custom.keymap'
 require 'custom.options'
 
 require('custom.themes').setup_theme_watcher()
-
