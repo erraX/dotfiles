@@ -16,20 +16,21 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
 zinit ice depth=1; zinit light romkatv/powerlevel10k
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # Plugins
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
-# zinit light junegunn/fzf-git.sh
 zinit snippet OMZP::git
 autoload -U compinit && compinit
 zinit cdreplay -q
 
+export FZF_CTRL_R_OPTS='--no-wrap --bind alt-r:toggle-wrap'
+source <(fzf --zsh)
+
 # Run `$(brew --prefix)/opt/fzf/install`
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_COMPLETION_TRIGGER=';;'
 
 alias sth="sh ~/.config/themes/theme_switcher.sh"
@@ -79,6 +80,7 @@ alias hub='cd ~/workspace/booking/verification-hub/apps/verification-hub-webapp'
 alias wkw='cd ~/workspace/booking/verification-hub/apps/verification-workspace-webapp'
 alias idvcs='cd ~/workspace/booking/b-mfes-2/component-services/verification-frontend-idv-component-service'
 alias cc='claude'
+alias ccd='claude --dangerously-skip-permissions --verbose -p'
 
 
 # alias cd
@@ -129,6 +131,9 @@ bindkey -r '^[t]'
 bindkey '^O' fzf-file-widget
 
 HISTDUP=erase
+HISTSIZE=10000
+SAVEHIST=10000
+
 setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
@@ -197,7 +202,6 @@ if [ -f "$HOME/.config/themes/current_fzf_theme" ]; then
   source "$HOME/.config/themes/current_fzf_theme"
 fi
 
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 # export ANTHROPIC_BASE_URL=http://localhost:5000
@@ -220,3 +224,4 @@ function y() {
 	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
