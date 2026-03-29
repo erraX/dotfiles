@@ -169,18 +169,16 @@ zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 zstyle ':fzf-tab:*' fzf-flags --height=70% --min-height=18 --layout=reverse --border
 
 # bun completions
-[ -s "/Users/mni/.bun/_bun" ] && source "/Users/mni/.bun/_bun"
+[ -s "/Users/mni/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-# export PATH="/opt/homebrew/opt/pnpm@9/bin:$PATH:$HOME/.local/bin"
 
-# Added by Windsurf
-export PATH="/Users/mni/.codeium/windsurf/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/mni/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -201,9 +199,6 @@ fi
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-
-# Added by Windsurf
-export PATH="/Users/mni/.codeium/windsurf/bin:/Users/mni/.local/bin:$PATH"
 
 # export ANTHROPIC_BASE_URL=http://localhost:5000
 # export CLAUDE_CODE_USE_BEDROCK=1
