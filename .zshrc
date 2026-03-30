@@ -81,6 +81,7 @@ alias wkw='cd ~/workspace/booking/verification-hub/apps/verification-workspace-w
 alias idvcs='cd ~/workspace/booking/b-mfes-2/component-services/verification-frontend-idv-component-service'
 alias cc='claude'
 alias ccd='claude --dangerously-skip-permissions --verbose -p'
+alias ccp='claude --dangerously-skip-permissions'
 
 
 # alias cd
