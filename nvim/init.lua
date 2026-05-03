@@ -879,6 +879,7 @@ require('lazy').setup({
       vim.lsp.config('vue_ls', vue_ls_config)
       vim.lsp.enable { 'vtsls', 'vue_ls' }
       vim.lsp.enable 'gopls'
+      vim.lsp.enable 'perlnavigator'
 
       -- ESLint is configured above in `servers` and enabled via mason-lspconfig handler
 
@@ -1182,9 +1183,31 @@ require('lazy').setup({
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter').install {
-        'bash', 'javascript', 'jsdoc', 'typescript', 'tsx', 'css', 'yaml', 'json',
-        'dockerfile', 'diff', 'html', 'lua', 'luadoc', 'markdown',
-        'markdown_inline', 'query', 'regex', 'toml', 'vue', 'python', 'go', 'swift', 'vim', 'vimdoc',
+        'bash',
+        'javascript',
+        'jsdoc',
+        'typescript',
+        'tsx',
+        'css',
+        'yaml',
+        'json',
+        'dockerfile',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'regex',
+        'toml',
+        'vue',
+        'python',
+        'go',
+        'swift',
+        'vim',
+        'vimdoc',
+        'perl',
       }
       -- Treesitter highlighting is now built into Neovim 0.12+
       vim.api.nvim_create_autocmd('FileType', {
