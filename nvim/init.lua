@@ -880,6 +880,7 @@ require('lazy').setup({
       vim.lsp.enable { 'vtsls', 'vue_ls' }
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'perlnavigator'
+      vim.lsp.enable 'pyright'
 
       -- ESLint is configured above in `servers` and enabled via mason-lspconfig handler
 
