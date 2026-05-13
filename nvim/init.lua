@@ -428,6 +428,7 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
+          path_display = { 'filename_first' },
           mappings = {
             i = {
               ['<C-k>'] = require('telescope.actions').move_selection_previous, -- move to prev result
@@ -1050,37 +1051,6 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-    config = function()
-      require('gruvbox').setup {
-        contrast = 'soft', -- can be "hard", "soft" or empty string
-      }
-    end,
-  },
-  {
-    'erraX/nvim-solarized',
-    priority = 1001,
-    config = function()
-      -- vim.o.background = 'dark'
-      -- vim.cmd.colorscheme 'solarized'
-    end,
-  },
-  {
-    'erraX/nvim-quietlight',
-    priority = 1001,
-    config = function()
-      require('quietlight').setup {
-        transparent = false, -- Enable transparent background
-        italic_comments = true, -- Use italic for comments
-        bold_functions = true, -- Use bold for functions
-      }
-
-      -- vim.o.background = 'light'
-      -- vim.cmd.colorscheme 'quietlight'
-    end,
-  },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -1103,21 +1073,9 @@ require('lazy').setup({
       -- vim.cmd.colorscheme 'dayfox'
       -- vim.cmd.colorscheme 'nightfox'
 
-      local function mac_is_dark()
-        local ok, out = pcall(vim.fn.system, { 'defaults', 'read', '-g', 'AppleInterfaceStyle' })
-        return ok and out:match 'Dark'
-      end
-
-      -- if mac_is_dark() then
-      --   vim.o.background = 'dark'
-      --   vim.cmd.colorscheme 'tokyonight-storm'
-      -- else
-      --   vim.o.background = 'light'
-      --   vim.cmd.colorscheme 'tokyonight-day'
-
-      -- vim.o.background = 'dark'
-      -- vim.cmd.colorscheme 'tokyonight-storm'
-      -- end
+      -- Colorscheme is selected by lua/custom/themes.lua based on the
+      -- ~/.config/nvim/current_theme file. tokyonight is kept installed as
+      -- a fallback option but is not auto-applied here.
     end,
   },
   --
@@ -1177,18 +1135,16 @@ require('lazy').setup({
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
-  { -- Treesitter parser installer and queries
+  { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    branch = 'main',
-    lazy = false,
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter').install {
+    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    opts = {
+      ensure_installed = {
         'bash',
         'javascript',
-        'jsdoc',
         'typescript',
-        'tsx',
         'css',
         'yaml',
         'json',
@@ -1200,23 +1156,29 @@ require('lazy').setup({
         'markdown',
         'markdown_inline',
         'query',
-        'regex',
-        'toml',
         'vue',
-        'python',
         'go',
-        'swift',
         'vim',
         'vimdoc',
-        'perl',
-      }
-      -- Treesitter highlighting is now built into Neovim 0.12+
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function()
-          pcall(vim.treesitter.start)
-        end,
-      })
-    end,
+      },
+      -- Autoinstall languages that are not installed
+      auto_install = true,
+      highlight = {
+        enable = true,
+        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+        --  If you are experiencing weird indenting issues, add the language to
+        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+        disable = { 'dockerfile' },
+        additional_vim_regex_highlighting = { 'ruby' },
+      },
+      indent = { enable = true, disable = { 'ruby' } },
+    },
+    -- There are additional nvim-treesitter modules that you can use to interact
+    -- with nvim-treesitter. You should go explore a few and see what interests you:
+    --
+    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -1272,5 +1234,4 @@ require('lazy').setup({
 
 require 'custom.keymap'
 require 'custom.options'
-
 require('custom.themes').setup_theme_watcher()
