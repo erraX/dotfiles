@@ -3,7 +3,7 @@
 THEME_FILE="$HOME/.config/themes/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight" "gruvbox")
+THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday")
 
 # Get current theme
 get_current_theme() {
@@ -35,6 +35,9 @@ set_theme() {
       "quietlight")
         tmux source-file "$HOME/.config/themes/tmux/quietlight.tmux"
         ;;
+      "tokyoday")
+        tmux source-file "$HOME/.config/themes/tmux/tokyoday.tmux"
+        ;;
     esac
   fi
   
@@ -61,6 +64,13 @@ set_theme() {
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/quietlight.sh"
       ;;
+    "tokyoday")
+      echo "Switch fzf theme to tokyoday"
+      # Write to a file that will be sourced by .zshrc
+      cat "$HOME/.config/themes/fzf/tokyoday.sh" > "$HOME/.config/themes/current_fzf_theme"
+      # Also apply to current shell
+      source "$HOME/.config/themes/fzf/tokyoday.sh"
+      ;;
     *)
       # Default case for unhandled themes
       echo "No specific FZF theme for $theme"
@@ -81,6 +91,10 @@ set_theme() {
       echo "Switch lazygit theme to quietlight"
       cp "$HOME/.config/lazygit/config.quietlight.yml" "$HOME/.config/lazygit/config.yml"
       ;;
+    "tokyoday")
+      echo "Switch lazygit theme to tokyoday"
+      cp "$HOME/.config/lazygit/config.tokyoday.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
     *)
       # Default case for unhandled themes
       echo "No specific lazygit theme for $theme"
@@ -98,6 +112,11 @@ set_theme() {
       echo "Switch kitty theme to quietlight"
       cp "$HOME/.config/kitty/themes/quiet-light.conf" "$HOME/.config/kitty/current_theme.conf"
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/quiet-light.conf" 2>/dev/null
+      ;;
+    "tokyoday")
+      echo "Switch kitty theme to tokyoday"
+      cp "$HOME/.config/kitty/themes/tokyo-night-day.conf" "$HOME/.config/kitty/current_theme.conf"
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/tokyo-night-day.conf" 2>/dev/null
       ;;
     *)
       echo "No specific kitty theme for $theme"

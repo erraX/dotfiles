@@ -1,0 +1,50 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --line-numbers --syntax-theme=GitHub
+gui:
+  theme:
+    # Borders
+    activeBorderColor:
+      - "#2e7de9"   # Tokyo Day blue accent
+      - bold
+    inactiveBorderColor:
+      - "#a8aecb"   # muted border
+
+    # Text / labels
+    defaultFgColor:
+      - "#3760bf"   # primary deep-blue text
+    optionsTextColor:
+      - "#007197"   # cyan / link-ish
+
+    # Selection (list highlight)
+    selectedLineBgColor:
+      - "#c4c8da"
+    selectedRangeBgColor:
+      - "#d0d5e3"
+
+    # Git states
+    unstagedChangesColor:
+      - "#f52a65"   # red
+    cherryPickedCommitBgColor:
+      - "#c4c8da"
+    cherryPickedCommitFgColor:
+      - "#587539"   # green
+
+    # Search UI
+    searchingActiveBorderColor:
+      - "#b15c00"   # orange
+      - bold
+
+  # Optional: pleasant, readable author colors on Tokyo Night Day
+  authorColors:
+    "*": "#3760bf"
+    "default": "#3760bf"
+    "A": "#2e7de9"  # blue
+    "B": "#587539"  # green
+    "C": "#f52a65"  # red
+    "D": "#9854f1"  # magenta
+    "E": "#118c74"  # teal
+    "F": "#b15c00"  # orange
+    "G": "#7847bd"  # purple
+    "H": "#007197"  # cyan
