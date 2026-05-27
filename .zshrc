@@ -226,3 +226,15 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+
+# bpages CLI
+export PATH="$HOME/.bpages/bin:$PATH"
+
+function sgpt() {
+	local token
+	token=$(bk auth:issue-token 2>/dev/null) || {
+		bk auth:login --skip-okta-auth > /dev/null 2>&1
+		token=$(bk auth:issue-token 2>/dev/null)
+	}
+	OPENAI_API_KEY="$token" command sgpt "$@"
+}
