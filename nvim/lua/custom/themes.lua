@@ -35,6 +35,12 @@ M.themes = {
     vim.o.background = 'dark'
     vim.cmd.colorscheme 'gruvbox'
   end,
+  ['everforest'] = function()
+    vim.o.background = 'dark'
+    vim.g.everforest_background = 'medium'
+    vim.g.everforest_better_performance = 1
+    vim.cmd.colorscheme 'everforest'
+  end,
   ['tokyoday'] = function()
     require('tokyonight').setup {
       style = 'day',
@@ -47,35 +53,69 @@ M.themes = {
 }
 
 -- Apply the current theme
-function M.apply_theme()
-  local theme = M.get_current_theme()
+function M.apply_theme(theme)
+  theme = theme or M.get_current_theme()
+  if theme == M.current_theme then
+    return
+  end
+
   if M.themes[theme] then
-    M.themes[theme]()
-    print('Applied theme: ' .. theme)
+    local ok, err = pcall(M.themes[theme])
+    if not ok then
+      vim.notify('Failed to apply theme "' .. theme .. '": ' .. err, vim.log.levels.ERROR)
+      return
+    end
+
+    M.current_theme = theme
+    vim.notify('Applied theme: ' .. theme)
   else
-    print('Unknown theme: ' .. theme)
-    -- Apply default theme
-    M.themes['solarized-dark']()
+    vim.notify('Unknown theme: ' .. theme, vim.log.levels.WARN)
+    M.apply_theme 'solarized-dark'
   end
 end
 
 -- Watch for theme changes
 function M.setup_theme_watcher()
   local theme_file = vim.fn.expand '~/.config/nvim/current_theme'
+  local theme_dir = vim.fs.dirname(theme_file)
 
-  -- Create an autocommand group
   local augroup = vim.api.nvim_create_augroup('ThemeWatcher', { clear = true })
 
-  -- Watch for changes to the theme file
-  vim.api.nvim_create_autocmd({ 'BufWritePost', 'FileChangedShellPost' }, {
-    pattern = theme_file,
+  -- Re-check after Neovim returns to the foreground in case the filesystem
+  -- event was missed while the machine was asleep.
+  vim.api.nvim_create_autocmd({ 'FocusGained', 'VimResume' }, {
     group = augroup,
     callback = function()
       M.apply_theme()
     end,
   })
 
-  -- Apply theme on startup
+  if M.watcher then
+    M.watcher:stop()
+    M.watcher:close()
+  end
+
+  M.watcher = vim.uv.new_fs_event()
+  if M.watcher then
+    M.watcher:start(theme_dir, {}, function(err, filename)
+      if err or (filename and filename ~= 'current_theme') then
+        return
+      end
+
+      vim.schedule(M.apply_theme)
+    end)
+  end
+
+  vim.api.nvim_create_autocmd('VimLeavePre', {
+    group = augroup,
+    callback = function()
+      if M.watcher and not M.watcher:is_closing() then
+        M.watcher:stop()
+        M.watcher:close()
+      end
+    end,
+  })
+
   M.apply_theme()
 end
 

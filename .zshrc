@@ -35,7 +35,7 @@ export FZF_COMPLETION_TRIGGER=';;'
 
 alias sth="sh ~/.config/themes/theme_switcher.sh"
 alias vi=nvim
-alias src='source ~/.zshrc'
+alias srcc='source ~/.zshrc'
 alias a=ls
 alias c=clear
 alias su='su -m'
@@ -238,3 +238,18 @@ function sgpt() {
 	}
 	OPENAI_API_KEY="$token" command sgpt "$@"
 }
+
+# Pi
+export PATH="/Users/mni/.local/share/fnm/node-versions/v24.11.0/installation/bin:$PATH"
+
+function pi() {
+	local token
+	token=$(bk auth:issue-token 2>/dev/null) || {
+		bk auth:login --skip-okta-auth > /dev/null 2>&1
+		token=$(bk auth:issue-token 2>/dev/null)
+	}
+	ANTHROPIC_API_KEY="$token" command pi "$@"
+}
+
+export SRC_ENDPOINT=https://sourcegraph.booking.com
+export GLEAN_SERVER_URL=booking-prod-be.glean.com

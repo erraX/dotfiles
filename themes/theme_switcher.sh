@@ -3,7 +3,30 @@
 THEME_FILE="$HOME/.config/themes/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday")
+THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday" "everforest")
+
+is_valid_theme() {
+  local requested_theme="$1"
+  local theme
+
+  for theme in "${THEMES[@]}"; do
+    if [[ "$theme" == "$requested_theme" ]]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+write_theme_file() {
+  local file="$1"
+  local theme="$2"
+  local temp_file
+
+  temp_file=$(mktemp "${file}.XXXXXX") || return 1
+  printf '%s\n' "$theme" > "$temp_file"
+  mv "$temp_file" "$file"
+}
 
 # Get current theme
 get_current_theme() {
@@ -18,10 +41,17 @@ get_current_theme() {
 # Set theme for all applications
 set_theme() {
   local theme="$1"
-  echo "$theme" > "$THEME_FILE"
+
+  if ! is_valid_theme "$theme"; then
+    echo "Unknown theme: $theme" >&2
+    list_themes >&2
+    return 1
+  fi
+
+  write_theme_file "$THEME_FILE" "$theme" || return 1
   
-  # Apply to Neovim (via temporary file that Neovim watches)
-  echo "$theme" > "$HOME/.config/nvim/current_theme"
+  # Neovim watches this file and applies the theme to running instances.
+  write_theme_file "$HOME/.config/nvim/current_theme" "$theme" || return 1
   
   # Apply to tmux
   if tmux info &> /dev/null; then
@@ -37,6 +67,9 @@ set_theme() {
         ;;
       "tokyoday")
         tmux source-file "$HOME/.config/themes/tmux/tokyoday.tmux"
+        ;;
+      "everforest")
+        tmux source-file "$HOME/.config/themes/tmux/everforest.tmux"
         ;;
     esac
   fi
@@ -71,6 +104,13 @@ set_theme() {
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/tokyoday.sh"
       ;;
+    "everforest")
+      echo "Switch fzf theme to everforest"
+      # Write to a file that will be sourced by .zshrc
+      cat "$HOME/.config/themes/fzf/everforest.sh" > "$HOME/.config/themes/current_fzf_theme"
+      # Also apply to current shell
+      source "$HOME/.config/themes/fzf/everforest.sh"
+      ;;
     *)
       # Default case for unhandled themes
       echo "No specific FZF theme for $theme"
@@ -95,6 +135,10 @@ set_theme() {
       echo "Switch lazygit theme to tokyoday"
       cp "$HOME/.config/lazygit/config.tokyoday.yml" "$HOME/.config/lazygit/config.yml"
       ;;
+    "everforest")
+      echo "Switch lazygit theme to everforest"
+      cp "$HOME/.config/lazygit/config.everforest.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
     *)
       # Default case for unhandled themes
       echo "No specific lazygit theme for $theme"
@@ -117,6 +161,11 @@ set_theme() {
       echo "Switch kitty theme to tokyoday"
       cp "$HOME/.config/kitty/themes/tokyo-night-day.conf" "$HOME/.config/kitty/current_theme.conf"
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/tokyo-night-day.conf" 2>/dev/null
+      ;;
+    "everforest")
+      echo "Switch kitty theme to everforest"
+      cp "$HOME/.config/kitty/themes/everforest-dark-medium.conf" "$HOME/.config/kitty/current_theme.conf"
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/everforest-dark-medium.conf" 2>/dev/null
       ;;
     *)
       echo "No specific kitty theme for $theme"

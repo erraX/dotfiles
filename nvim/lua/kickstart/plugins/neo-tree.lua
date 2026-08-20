@@ -11,7 +11,18 @@ return {
   },
   lazy = false,
   keys = {
-    { '<leader>e', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    {
+      '<leader>e',
+      function()
+        if vim.bo.buftype == '' and vim.api.nvim_buf_get_name(0) ~= '' then
+          vim.cmd 'Neotree reveal'
+        else
+          vim.cmd 'Neotree filesystem'
+        end
+      end,
+      desc = 'NeoTree reveal',
+      silent = true,
+    },
   },
   opts = {
     close_if_last_window = false,
