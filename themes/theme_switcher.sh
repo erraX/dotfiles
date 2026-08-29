@@ -3,7 +3,7 @@
 THEME_FILE="$HOME/.config/themes/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday" "everforest")
+THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday" "tokyonight" "everforest")
 
 is_valid_theme() {
   local requested_theme="$1"
@@ -26,6 +26,30 @@ write_theme_file() {
   temp_file=$(mktemp "${file}.XXXXXX") || return 1
   printf '%s\n' "$theme" > "$temp_file"
   mv "$temp_file" "$file"
+}
+
+apply_herdr_theme() {
+  local theme="$1"
+  local source="$HOME/.config/herdr/config.${theme}.toml"
+  local target="$HOME/.config/herdr/config.toml"
+  local temp_file
+
+  [ -f "$source" ] || return 1
+  temp_file=$(mktemp "${target}.XXXXXX") || return 1
+
+  if ! cp "$source" "$temp_file"; then
+    rm -f "$temp_file"
+    return 1
+  fi
+  if ! mv "$temp_file" "$target"; then
+    rm -f "$temp_file"
+    return 1
+  fi
+
+  echo "Switch Herdr theme to $theme"
+  if command -v herdr >/dev/null 2>&1; then
+    herdr server reload-config >/dev/null 2>&1 || true
+  fi
 }
 
 # Get current theme
@@ -68,6 +92,9 @@ set_theme() {
       "tokyoday")
         tmux source-file "$HOME/.config/themes/tmux/tokyoday.tmux"
         ;;
+      "tokyonight")
+        tmux source-file "$HOME/.config/themes/tmux/tokyonight.tmux"
+        ;;
       "everforest")
         tmux source-file "$HOME/.config/themes/tmux/everforest.tmux"
         ;;
@@ -104,6 +131,13 @@ set_theme() {
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/tokyoday.sh"
       ;;
+    "tokyonight")
+      echo "Switch fzf theme to tokyonight"
+      # Write to a file that will be sourced by .zshrc
+      cat "$HOME/.config/themes/fzf/tokyonight.sh" > "$HOME/.config/themes/current_fzf_theme"
+      # Also apply to current shell
+      source "$HOME/.config/themes/fzf/tokyonight.sh"
+      ;;
     "everforest")
       echo "Switch fzf theme to everforest"
       # Write to a file that will be sourced by .zshrc
@@ -135,6 +169,10 @@ set_theme() {
       echo "Switch lazygit theme to tokyoday"
       cp "$HOME/.config/lazygit/config.tokyoday.yml" "$HOME/.config/lazygit/config.yml"
       ;;
+    "tokyonight")
+      echo "Switch lazygit theme to tokyonight"
+      cp "$HOME/.config/lazygit/config.tokyonight.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
     "everforest")
       echo "Switch lazygit theme to everforest"
       cp "$HOME/.config/lazygit/config.everforest.yml" "$HOME/.config/lazygit/config.yml"
@@ -162,6 +200,11 @@ set_theme() {
       cp "$HOME/.config/kitty/themes/tokyo-night-day.conf" "$HOME/.config/kitty/current_theme.conf"
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/tokyo-night-day.conf" 2>/dev/null
       ;;
+    "tokyonight")
+      echo "Switch kitty theme to tokyonight"
+      cp "$HOME/.config/kitty/themes/tokyo-night.conf" "$HOME/.config/kitty/current_theme.conf"
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/tokyo-night.conf" 2>/dev/null
+      ;;
     "everforest")
       echo "Switch kitty theme to everforest"
       cp "$HOME/.config/kitty/themes/everforest-dark-medium.conf" "$HOME/.config/kitty/current_theme.conf"
@@ -169,6 +212,13 @@ set_theme() {
       ;;
     *)
       echo "No specific kitty theme for $theme"
+      ;;
+  esac
+
+  # Apply to Herdr. Full configurations currently exist for these two themes.
+  case "$theme" in
+    "quietlight"|"everforest")
+      apply_herdr_theme "$theme" || return 1
       ;;
   esac
 

@@ -1,0 +1,56 @@
+[ui]
+agent_panel_sort = "spaces"
+tab_bar_right = [
+  { type = "command", command = "/Users/mni/.config/herdr/input-source-status.sh", interval_seconds = 1, timeout_seconds = 1 },
+  { type = "datetime", format = "%H:%M" },
+  { type = "zoom" },
+  { type = "command", command = "/Users/mni/.config/herdr/agent-elapsed-tracker.sh", interval_seconds = 10, timeout_seconds = 2 },
+]
+tab_bar_right_separator = "  "
+
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#b6c6b2", dim = false }],
+  [
+    { token = "agent", fg = "#aeb7a6", dim = false },
+    { token = "$profile", fg = "#a7c080", dim = false },
+    { token = "$elapsed", fg = "#dbbc7f", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Everforest Dark Medium, aligned with Kitty's Everforest theme.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#29363a"
+panel_bg = "#2d353b"
+active_row_bg = "#40574f"
+selection_bg = "#536b61"
+surface0 = "#354347"
+surface1 = "#3f4f52"
+surface_dim = "#243034"
+overlay0 = "#576a64"
+overlay1 = "#74867c"
+text = "#d8d1b8"
+subtext0 = "#aeb7a6"
+accent = "#a7c080"
+mauve = "#d699b6"
+green = "#a7c080"
+yellow = "#dbbc7f"
+red = "#e67e80"
+blue = "#7fbbb3"
+teal = "#83c092"
+peach = "#e69875"
+
+[keys]
+prefix = "ctrl+g"
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+previous_agent = "prefix+shift+k"
+next_agent = "prefix+shift+j"
+
+[experimental]
+switch_ascii_input_source_in_prefix = true

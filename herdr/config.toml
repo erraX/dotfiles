@@ -1,0 +1,56 @@
+[ui]
+agent_panel_sort = "spaces"
+tab_bar_right = [
+  { type = "command", command = "/Users/mni/.config/herdr/input-source-status.sh", interval_seconds = 1, timeout_seconds = 1 },
+  { type = "datetime", format = "%H:%M" },
+  { type = "zoom" },
+  { type = "command", command = "/Users/mni/.config/herdr/agent-elapsed-tracker.sh", interval_seconds = 10, timeout_seconds = 2 },
+]
+tab_bar_right_separator = "  "
+
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#858585", dim = false }],
+  [
+    { token = "agent", fg = "#666666", dim = false },
+    { token = "$profile", fg = "#4b83cd", dim = false },
+    { token = "$elapsed", fg = "#448c27", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Quiet Light, aligned with Kitty's active light theme.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#f2f2f2"
+panel_bg = "#f5f5f5"
+active_row_bg = "#d4e4f6"
+selection_bg = "#c1f5b0"
+surface0 = "#ebebeb"
+surface1 = "#e0e9f6"
+surface_dim = "#bec4c2"
+overlay0 = "#c9ced2"
+overlay1 = "#aeb7c1"
+text = "#333333"
+subtext0 = "#626262"
+accent = "#4b83cd"
+mauve = "#7a3e9d"
+green = "#448c27"
+yellow = "#ab6526"
+red = "#aa3731"
+blue = "#4b83cd"
+teal = "#4ec1e5"
+peach = "#ab6526"
+
+[keys]
+prefix = "ctrl+g"
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+previous_agent = "prefix+shift+k"
+next_agent = "prefix+shift+j"
+
+[experimental]
+switch_ascii_input_source_in_prefix = true

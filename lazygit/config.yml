@@ -1,51 +1,48 @@
 git:
   pagers:
-    # Delta does not bundle an Everforest syntax theme; ANSI follows the
-    # terminal palette when Everforest is active in Kitty.
     - colorArg: always
-      pager: delta --paging=never --line-numbers --syntax-theme=ansi
+      pager: delta --paging=never --line-numbers --syntax-theme=GitHub
 gui:
   theme:
     # Borders
     activeBorderColor:
-      - "#7fbbb3"   # blue
+      - "#005fb8"   # Quiet Light-ish blue accent
       - bold
     inactiveBorderColor:
-      - "#4f585e"   # bg4
+      - "#c8c8c8"   # light grey borders
 
-    # Panels / text
+    # Text / labels
     defaultFgColor:
-      - "#d3c6aa"   # fg
+      - "#333333"   # main text
     optionsTextColor:
-      - "#83c092"   # aqua
+      - "#005fb8"   # option hints / links
 
-    # Selection / focus
+    # Selection (list highlight)
     selectedLineBgColor:
-      - "#343f44"   # bg1
+      - "#e9e9e9"
     selectedRangeBgColor:
-      - "#543a48"   # bg_visual
+      - "#dedede"
 
     # Git states
     unstagedChangesColor:
-      - "#e67e80"   # red
+      - "#b00020"   # quiet red for unstaged
     cherryPickedCommitBgColor:
-      - "#425047"   # bg_green
+      - "#e9e9e9"
     cherryPickedCommitFgColor:
-      - "#a7c080"   # green
+      - "#2e7d32"   # quiet green
 
-    # Search highlight
+    # Search UI
     searchingActiveBorderColor:
-      - "#dbbc7f"   # yellow
+      - "#b58900"   # quiet amber
       - bold
 
+  # Optional: pleasant, readable author colors on light background
   authorColors:
-    "*": "#d3c6aa"
-    "default": "#d3c6aa"
-    "A": "#7fbbb3"  # blue
-    "B": "#83c092"  # aqua
-    "C": "#a7c080"  # green
-    "D": "#dbbc7f"  # yellow
-    "E": "#e69875"  # orange
-    "F": "#d699b6"  # purple
-    "G": "#e67e80"  # red
-    "H": "#9da9a0"  # grey2
+    "*": "#333333"
+    "default": "#333333"
+    "A": "#005fb8"
+    "B": "#2e7d32"
+    "C": "#b00020"
+    "D": "#6e33ce"
+    "E": "#008080"
+    "F": "#b58900"

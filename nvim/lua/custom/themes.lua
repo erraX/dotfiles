@@ -49,6 +49,14 @@ M.themes = {
     vim.o.background = 'light'
     vim.cmd.colorscheme 'tokyonight-day'
   end,
+  ['tokyonight'] = function()
+    require('tokyonight').setup {
+      style = 'storm',
+      styles = { comments = { italic = false } },
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'tokyonight-storm'
+  end,
   -- Add more themes as needed
 }
 

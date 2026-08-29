@@ -1,1 +1,9 @@
 .DS_Store
+
+# Herdr runtime state; static configuration lives in herdr/.
+/herdr/.agent-elapsed-state.*
+/herdr/.plugins.lock
+/herdr/agent-elapsed-state.json
+/herdr/*.log
+/herdr/*.sock
+/herdr/session*.json
