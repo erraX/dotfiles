@@ -58,4 +58,5 @@ next_agent = "prefix+shift+j"
 switch_ascii_input_source_in_prefix = true
 
 [ui.toast]
-delivery = "system"
+delivery = "terminal"
+delay_seconds = 1
