@@ -8,6 +8,8 @@ tab_bar_right = [
 ]
 tab_bar_right_separator = "  "
 
+status_indicators = "symbols"
+show_agent_labels_on_pane_borders = true
 [ui.sidebar.agents]
 row_gap = 1
 rows = [
@@ -54,3 +56,6 @@ next_agent = "prefix+shift+j"
 
 [experimental]
 switch_ascii_input_source_in_prefix = true
+
+[ui.toast]
+delivery = "system"
