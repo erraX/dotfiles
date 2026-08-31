@@ -7,6 +7,8 @@ tab_bar_right = [
   { type = "command", command = "/Users/mni/.config/herdr/agent-elapsed-tracker.sh", interval_seconds = 10, timeout_seconds = 2 },
 ]
 tab_bar_right_separator = "  "
+prompt_new_tab_name = false
+window_title = "{workspace} · {tab}"
 
 [ui.sidebar.agents]
 row_gap = 1
@@ -18,6 +20,9 @@ rows = [
     { token = "$elapsed", fg = "#dbbc7f", bold = true, dim = false },
   ],
 ]
+
+[terminal]
+new_cwd = "follow"
 
 [theme]
 # Everforest Dark Medium, aligned with Kitty's Everforest theme.
