@@ -215,9 +215,9 @@ set_theme() {
       ;;
   esac
 
-  # Apply to Herdr. Full configurations currently exist for these two themes.
+  # Apply to Herdr. Full configurations currently exist for these three themes.
   case "$theme" in
-    "quietlight"|"everforest")
+    "quietlight"|"tokyonight"|"everforest")
       apply_herdr_theme "$theme" || return 1
       ;;
   esac
