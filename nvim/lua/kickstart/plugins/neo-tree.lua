@@ -28,6 +28,13 @@ return {
     close_if_last_window = false,
     follow_current_file = true,
     filesystem = {
+      components = {
+        icon = function(config, node, state)
+          local icon = require('neo-tree.sources.common.components').icon(config, node, state)
+          icon.text = icon.text .. ' '
+          return icon
+        end,
+      },
       window = {
         mappings = {
           ['<leader>e'] = 'close_window',
