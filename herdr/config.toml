@@ -89,3 +89,7 @@ switch_ascii_input_source_in_prefix = true
 [ui.toast]
 delivery = "terminal"
 delay_seconds = 1
+
+[ui.toast.clipboard]
+enabled = true
+position = "top-right"
