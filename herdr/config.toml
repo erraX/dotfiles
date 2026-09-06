@@ -1,15 +1,16 @@
 [ui]
 agent_panel_sort = "spaces"
 tab_bar_right = [
-  { type = "command", command = "/Users/mni/.config/herdr/input-source-status.sh", interval_seconds = 1, timeout_seconds = 1 },
   { type = "datetime", format = "%H:%M" },
-  { type = "zoom" },
   { type = "command", command = "/Users/mni/.config/herdr/agent-elapsed-tracker.sh", interval_seconds = 10, timeout_seconds = 2 },
+  { type = "command", command = "/Users/mni/.config/herdr/zoom-status.sh", interval_seconds = 1, timeout_seconds = 1 },
 ]
 tab_bar_right_separator = "  "
 prompt_new_tab_name = false
 window_title = "{workspace} · {tab}"
 
+status_indicators = "symbols"
+show_agent_labels_on_pane_borders = true
 [ui.sidebar.agents]
 row_gap = 1
 rows = [
@@ -93,3 +94,6 @@ delay_seconds = 1
 [ui.toast.clipboard]
 enabled = true
 position = "top-right"
+
+[ui.sound]
+enabled = false
