@@ -1,0 +1,56 @@
+diff --git a/src/ui/panes.rs b/src/ui/panes.rs
+index f20b55b..9f89929 100644
+--- a/src/ui/panes.rs
++++ b/src/ui/panes.rs
+@@ -906,2 +906,5 @@ fn selection_fg_for_bg(bg: Color, p: &Palette) -> Color {
+-            if relative_luminance(bg) < 0.5 {
+-                Color::White
++            let background_luminance = relative_luminance(bg);
++            let black_contrast = contrast_ratio(background_luminance, 0.0);
++            let white_contrast = contrast_ratio(background_luminance, 1.0);
++            if black_contrast >= white_contrast {
++                Color::Rgb(0, 0, 0)
+@@ -909 +912 @@ fn selection_fg_for_bg(bg: Color, p: &Palette) -> Color {
+-                Color::Black
++                Color::Rgb(255, 255, 255)
+@@ -914,0 +918,6 @@ fn selection_fg_for_bg(bg: Color, p: &Palette) -> Color {
++fn contrast_ratio(first_luminance: f32, second_luminance: f32) -> f32 {
++    let lighter = first_luminance.max(second_luminance);
++    let darker = first_luminance.min(second_luminance);
++    (lighter + 0.05) / (darker + 0.05)
++}
++
+@@ -1606,0 +1616,33 @@ mod tests {
++
++    #[test]
++    fn automatic_selection_style_uses_truecolor_contrast_foreground() {
++        let palette = Palette::terminal();
++
++        let light_style = automatic_selection_style(
++            &palette,
++            crate::terminal_theme::TerminalTheme {
++                background: Some(crate::terminal_theme::RgbColor {
++                    r: 253,
++                    g: 246,
++                    b: 227,
++                }),
++                ..Default::default()
++            },
++        );
++        assert_eq!(light_style.bg, Some(Color::Rgb(182, 177, 163)));
++        assert_eq!(light_style.fg, Some(Color::Rgb(0, 0, 0)));
++
++        let dark_style = automatic_selection_style(
++            &palette,
++            crate::terminal_theme::TerminalTheme {
++                background: Some(crate::terminal_theme::RgbColor {
++                    r: 12,
++                    g: 14,
++                    b: 16,
++                }),
++                ..Default::default()
++            },
++        );
++        assert_eq!(dark_style.bg, Some(Color::Rgb(80, 81, 83)));
++        assert_eq!(dark_style.fg, Some(Color::Rgb(255, 255, 255)));
++    }
