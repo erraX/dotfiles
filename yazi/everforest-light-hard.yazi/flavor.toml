@@ -1,0 +1,104 @@
+# vim:fileencoding=utf-8
+# Everforest Light Hard for Yazi.
+# Official backgrounds with darker semantic accents for readable TUI labels.
+
+[app]
+overall = { bg = "#fffbef" }
+
+[mgr]
+cwd = { fg = "#2e7099" }
+find_keyword = { fg = "#8c5a00", bold = true, underline = true }
+find_position = { fg = "#2c7459", bg = "reset", bold = true }
+marker_copied = { fg = "#47661b", bg = "#47661b" }
+marker_cut = { fg = "#ad3b4a", bg = "#ad3b4a" }
+marker_marked = { fg = "#8f537f", bg = "#8f537f" }
+marker_selected = { fg = "#8c5a00", bg = "#8c5a00" }
+count_copied = { fg = "#fffbef", bg = "#47661b", bold = true }
+count_cut = { fg = "#fffbef", bg = "#ad3b4a", bold = true }
+count_selected = { fg = "#fffbef", bg = "#8c5a00", bold = true }
+border_symbol = "│"
+border_style = { fg = "#829181" }
+
+[indicator]
+parent = { fg = "#829181", bg = "#f2efdf" }
+current = { fg = "#2e7099", bg = "#f8f5e4" }
+preview = { fg = "#5c6a72", bg = "#f2efdf" }
+padding = { open = " ", close = " " }
+
+[tabs]
+active = { fg = "#fffbef", bg = "#2e7099", bold = true }
+inactive = { fg = "#5c6a72", bg = "#f8f5e4" }
+sep_inner = { open = " ", close = " " }
+sep_outer = { open = " ", close = " " }
+
+[mode]
+normal_main = { fg = "#fffbef", bg = "#2e7099", bold = true }
+normal_alt = { fg = "#2e7099", bg = "#f8f5e4" }
+select_main = { fg = "#fffbef", bg = "#47661b", bold = true }
+select_alt = { fg = "#47661b", bg = "#f3f5d9" }
+unset_main = { fg = "#fffbef", bg = "#8c5a00", bold = true }
+unset_alt = { fg = "#8c5a00", bg = "#f8f5e4" }
+
+[status]
+overall = { fg = "#fffbef", bg = "#2e7099" }
+sep_left = { open = " ", close = " " }
+sep_right = { open = " ", close = " " }
+perm_sep = { fg = "#a6b0a0" }
+perm_type = { fg = "#fffbef", bold = true }
+perm_read = { fg = "#f3f5d9" }
+perm_write = { fg = "#ffe7de" }
+perm_exec = { fg = "#f0f2d4" }
+progress_label = { fg = "#fffbef", bold = true }
+progress_normal = { fg = "#fffbef", bg = "#2c7459" }
+progress_error = { fg = "#fffbef", bg = "#ad3b4a" }
+
+[which]
+cols = 2
+mask = { bg = "#f8f5e4" }
+cand = { fg = "#2e7099", bold = true }
+rest = { fg = "#708089" }
+desc = { fg = "#8f537f" }
+separator = " -> "
+separator_style = { fg = "#829181" }
+
+[confirm]
+border = { fg = "#2e7099" }
+title = { fg = "#2e7099", bold = true }
+body = { fg = "#5c6a72" }
+list = { fg = "#5c6a72" }
+btn_yes = { fg = "#fffbef", bg = "#47661b", bold = true }
+btn_no = { fg = "#5c6a72", bg = "#f2efdf" }
+btn_labels = [" Yes ", " No "]
+
+[input]
+border = { fg = "#2e7099" }
+title = { fg = "#5c6a72", bold = true }
+value = { fg = "#5c6a72" }
+selected = { bg = "#f0f2d4" }
+
+[pick]
+border = { fg = "#2e7099" }
+active = { fg = "#2e7099", bold = true }
+inactive = { fg = "#708089" }
+
+[spot]
+border = { fg = "#2e7099" }
+title = { fg = "#2e7099", bold = true }
+tbl_col = { fg = "#2c7459" }
+tbl_cell = { fg = "#5c6a72", bg = "#f0f2d4" }
+
+[notify]
+title_info = { fg = "#2e7099", bold = true }
+title_warn = { fg = "#8c5a00", bold = true }
+title_error = { fg = "#ad3b4a", bold = true }
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#2c7459" },
+  { mime = "{audio,video}/*", fg = "#8c5a00" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#8f537f" },
+  { mime = "application/{pdf,doc,rtf}", fg = "#47661b" },
+  { mime = "vfs/{absent,stale}", fg = "#708089" },
+  { url = "*/", fg = "#2e7099", bold = true },
+  { url = "*", fg = "#5c6a72" },
+]

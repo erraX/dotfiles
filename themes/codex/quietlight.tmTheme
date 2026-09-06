@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>name</key><string>VSCode Quiet Light (Yazi)</string>
+    <key>name</key><string>Quiet Light</string>
 
     <key>settings</key>
     <array>

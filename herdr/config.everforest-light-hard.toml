@@ -26,18 +26,18 @@ rows = [
 new_cwd = "follow"
 
 [theme]
-# Everforest Light Medium; backgrounds follow upstream with darker TUI accents.
+# Everforest Light Hard; backgrounds follow upstream with darker TUI accents.
 name = "terminal"
 auto_switch = false
 
 [theme.custom]
-sidebar_bg = "#efebd4"
-panel_bg = "#fdf6e3"
-active_row_bg = "#e0dcc7"
-selection_bg = "#eaedc8"
-surface0 = "#f4f0d9"
-surface1 = "#efebd4"
-surface_dim = "#efebd4"
+sidebar_bg = "#f2efdf"
+panel_bg = "#fffbef"
+active_row_bg = "#e8e5d5"
+selection_bg = "#f0f2d4"
+surface0 = "#f8f5e4"
+surface1 = "#f2efdf"
+surface_dim = "#f2efdf"
 overlay0 = "#708089"
 overlay1 = "#939f91"
 text = "#5c6a72"

@@ -1,6 +1,13 @@
 -- In your init.lua or a separate themes.lua file
 local M = {}
 
+local function apply_everforest(background, contrast)
+  vim.o.background = background
+  vim.g.everforest_background = contrast
+  vim.g.everforest_better_performance = 1
+  vim.cmd.colorscheme 'everforest'
+end
+
 -- Function to read current theme from file
 function M.get_current_theme()
   local theme_file = vim.fn.expand '~/.config/nvim/current_theme'
@@ -36,10 +43,16 @@ M.themes = {
     vim.cmd.colorscheme 'gruvbox'
   end,
   ['everforest'] = function()
-    vim.o.background = 'dark'
-    vim.g.everforest_background = 'medium'
-    vim.g.everforest_better_performance = 1
-    vim.cmd.colorscheme 'everforest'
+    apply_everforest('dark', 'medium')
+  end,
+  ['everforest-light-hard'] = function()
+    apply_everforest('light', 'hard')
+  end,
+  ['everforest-light-medium'] = function()
+    apply_everforest('light', 'medium')
+  end,
+  ['everforest-light-soft'] = function()
+    apply_everforest('light', 'soft')
   end,
   ['tokyoday'] = function()
     require('tokyonight').setup {
@@ -48,6 +61,26 @@ M.themes = {
     }
     vim.o.background = 'light'
     vim.cmd.colorscheme 'tokyonight-day'
+  end,
+  ['kanagawa-lotus'] = function()
+    require('kanagawa').setup {
+      theme = 'lotus',
+      background = { dark = 'wave', light = 'lotus' },
+      commentStyle = { italic = false },
+      keywordStyle = { italic = false },
+      terminalColors = true,
+    }
+    vim.o.background = 'light'
+    vim.cmd.colorscheme 'kanagawa-lotus'
+  end,
+  ['rose-pine-dawn'] = function()
+    require('rose-pine').setup {
+      variant = 'dawn',
+      dark_variant = 'moon',
+      styles = { italic = false, transparency = false },
+    }
+    vim.o.background = 'light'
+    vim.cmd.colorscheme 'rose-pine-dawn'
   end,
   ['tokyonight'] = function()
     require('tokyonight').setup {

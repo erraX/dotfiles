@@ -1,9 +1,11 @@
 #!/bin/bash
 
-THEME_FILE="$HOME/.config/themes/current_theme"
+THEMES_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+DOTFILES_DIR=$(dirname "$THEMES_DIR")
+THEME_FILE="$THEMES_DIR/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight" "gruvbox" "tokyoday" "tokyonight" "everforest")
+THEMES=("solarized-dark" "quietlight" "kanagawa-lotus" "rose-pine-dawn" "gruvbox" "tokyoday" "tokyonight" "everforest" "everforest-light-hard" "everforest-light-medium" "everforest-light-soft")
 
 is_valid_theme() {
   local requested_theme="$1"
@@ -28,23 +30,155 @@ write_theme_file() {
   mv "$temp_file" "$file"
 }
 
+copy_file_atomically() {
+  local source="$1"
+  local target="$2"
+  local temp_file
+
+  [ -f "$source" ] || {
+    echo "Missing theme asset: $source" >&2
+    return 1
+  }
+
+  temp_file=$(mktemp "${target}.XXXXXX") || return 1
+  if ! cp "$source" "$temp_file"; then
+    unlink "$temp_file" 2>/dev/null || true
+    return 1
+  fi
+  if ! mv "$temp_file" "$target"; then
+    unlink "$temp_file" 2>/dev/null || true
+    return 1
+  fi
+}
+
+ensure_theme_link() {
+  local source="$1"
+  local target="$2"
+
+  [ -e "$source" ] || {
+    echo "Missing theme asset: $source" >&2
+    return 1
+  }
+
+  if [ -L "$target" ]; then
+    if [ "$source" -ef "$target" ]; then
+      return 0
+    fi
+    echo "Refusing to replace a different theme asset: $target" >&2
+    return 1
+  fi
+
+  if [ -e "$target" ]; then
+    if [ -f "$source" ] && [ -f "$target" ] && cmp -s "$source" "$target"; then
+      return 0
+    fi
+    echo "Refusing to replace a different theme asset: $target" >&2
+    return 1
+  fi
+
+  ln -s "$source" "$target"
+}
+
+install_bat_theme() {
+  local theme="$1"
+  local source="$THEMES_DIR/codex/${theme}.tmTheme"
+  local bat_config_dir
+  local bat_cache_dir
+  local target
+
+  command -v bat >/dev/null 2>&1 || {
+    echo "Skip bat/delta syntax theme: bat is not installed" >&2
+    return 0
+  }
+
+  bat_config_dir=$(bat --config-dir) || return 1
+  bat_cache_dir=$(bat --cache-dir) || return 1
+  mkdir -p "$bat_config_dir/themes" || return 1
+  target="$bat_config_dir/themes/${theme}.tmTheme"
+  ensure_theme_link "$source" "$target" || return 1
+  if [ ! -f "$bat_cache_dir/themes.bin" ] \
+    || [ "$source" -nt "$bat_cache_dir/themes.bin" ] \
+    || ! bat --list-themes | grep -Fqx "$theme"; then
+    bat cache --build >/dev/null || return 1
+  fi
+  echo "Switch delta syntax theme assets to $theme"
+}
+
+apply_yazi_theme() {
+  local theme="$1"
+  local flavor="${2:-$theme}"
+  local source_theme="$DOTFILES_DIR/yazi/theme.${theme}.toml"
+  local source_flavor="$DOTFILES_DIR/yazi/${flavor}.yazi"
+  local yazi_config_dir="${YAZI_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}/yazi}"
+  local target_flavor="$yazi_config_dir/flavors/${flavor}.yazi"
+
+  mkdir -p "$yazi_config_dir/flavors" || return 1
+  ensure_theme_link "$source_flavor" "$target_flavor" || return 1
+  copy_file_atomically "$source_theme" "$yazi_config_dir/theme.toml" || return 1
+  echo "Switch Yazi theme to $theme"
+}
+
+apply_codex_theme() {
+  local theme="$1"
+  local source="$THEMES_DIR/codex/${theme}.tmTheme"
+  local codex_config_dir="${CODEX_HOME:-$HOME/.codex}"
+  local target="$codex_config_dir/themes/${theme}.tmTheme"
+
+  command -v python3 >/dev/null 2>&1 || {
+    echo "Cannot switch Codex theme: python3 is not installed" >&2
+    return 1
+  }
+
+  mkdir -p "$codex_config_dir/themes" || return 1
+  ensure_theme_link "$source" "$target" || return 1
+  python3 "$THEMES_DIR/update_theme_configs.py" codex \
+    --file "$codex_config_dir/config.toml" --theme "$theme" || return 1
+  echo "Switch Codex syntax theme to $theme (new or resumed sessions)"
+}
+
+apply_vscode_theme() {
+  local theme_name="$1"
+  local variant="${2:-}"
+  local settings_file="${VSCODE_SETTINGS_FILE:-}"
+
+  command -v python3 >/dev/null 2>&1 || {
+    echo "Cannot switch VS Code theme: python3 is not installed" >&2
+    return 1
+  }
+
+  if [ -z "$settings_file" ]; then
+    case "$(uname -s)" in
+      Darwin)
+        settings_file="$HOME/Library/Application Support/Code/User/settings.json"
+        ;;
+      *)
+        settings_file="${XDG_CONFIG_HOME:-$HOME/.config}/Code/User/settings.json"
+        ;;
+    esac
+  fi
+
+  [ -f "$settings_file" ] || {
+    echo "Skip VS Code theme: settings file not found at $settings_file" >&2
+    return 0
+  }
+
+  if [ -n "$variant" ]; then
+    python3 "$THEMES_DIR/update_theme_configs.py" vscode \
+      --file "$settings_file" --theme "$theme_name" --variant "$variant" || return 1
+  else
+    python3 "$THEMES_DIR/update_theme_configs.py" vscode \
+      --file "$settings_file" --theme "$theme_name" || return 1
+  fi
+  echo "Switch VS Code theme to $theme_name"
+}
+
 apply_herdr_theme() {
   local theme="$1"
   local source="$HOME/.config/herdr/config.${theme}.toml"
   local target="$HOME/.config/herdr/config.toml"
-  local temp_file
 
   [ -f "$source" ] || return 1
-  temp_file=$(mktemp "${target}.XXXXXX") || return 1
-
-  if ! cp "$source" "$temp_file"; then
-    rm -f "$temp_file"
-    return 1
-  fi
-  if ! mv "$temp_file" "$target"; then
-    rm -f "$temp_file"
-    return 1
-  fi
+  copy_file_atomically "$source" "$target" || return 1
 
   echo "Switch Herdr theme to $theme"
   if command -v herdr >/dev/null 2>&1; then
@@ -72,10 +206,12 @@ set_theme() {
     return 1
   fi
 
-  write_theme_file "$THEME_FILE" "$theme" || return 1
-  
-  # Neovim watches this file and applies the theme to running instances.
-  write_theme_file "$HOME/.config/nvim/current_theme" "$theme" || return 1
+  # Install custom syntax assets before changing any active application files.
+  case "$theme" in
+    "kanagawa-lotus"|"rose-pine-dawn"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      install_bat_theme "$theme" || return 1
+      ;;
+  esac
   
   # Apply to tmux
   if tmux info &> /dev/null; then
@@ -89,6 +225,12 @@ set_theme() {
       "quietlight")
         tmux source-file "$HOME/.config/themes/tmux/quietlight.tmux"
         ;;
+      "kanagawa-lotus")
+        tmux source-file "$HOME/.config/themes/tmux/kanagawa-lotus.tmux" || return 1
+        ;;
+      "rose-pine-dawn")
+        tmux source-file "$HOME/.config/themes/tmux/rose-pine-dawn.tmux" || return 1
+        ;;
       "tokyoday")
         tmux source-file "$HOME/.config/themes/tmux/tokyoday.tmux"
         ;;
@@ -97,6 +239,9 @@ set_theme() {
         ;;
       "everforest")
         tmux source-file "$HOME/.config/themes/tmux/everforest.tmux"
+        ;;
+      "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+        tmux source-file "$HOME/.config/themes/tmux/${theme}.tmux" || return 1
         ;;
     esac
   fi
@@ -124,6 +269,18 @@ set_theme() {
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/quietlight.sh"
       ;;
+    "kanagawa-lotus")
+      echo "Switch fzf theme to kanagawa lotus"
+      copy_file_atomically "$HOME/.config/themes/fzf/kanagawa-lotus.sh" \
+        "$HOME/.config/themes/current_fzf_theme" || return 1
+      source "$HOME/.config/themes/fzf/kanagawa-lotus.sh"
+      ;;
+    "rose-pine-dawn")
+      echo "Switch fzf theme to rose pine dawn"
+      copy_file_atomically "$HOME/.config/themes/fzf/rose-pine-dawn.sh" \
+        "$HOME/.config/themes/current_fzf_theme" || return 1
+      source "$HOME/.config/themes/fzf/rose-pine-dawn.sh"
+      ;;
     "tokyoday")
       echo "Switch fzf theme to tokyoday"
       # Write to a file that will be sourced by .zshrc
@@ -145,6 +302,12 @@ set_theme() {
       # Also apply to current shell
       source "$HOME/.config/themes/fzf/everforest.sh"
       ;;
+    "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      echo "Switch fzf theme to $theme"
+      copy_file_atomically "$HOME/.config/themes/fzf/${theme}.sh" \
+        "$HOME/.config/themes/current_fzf_theme" || return 1
+      source "$HOME/.config/themes/fzf/${theme}.sh" || return 1
+      ;;
     *)
       # Default case for unhandled themes
       echo "No specific FZF theme for $theme"
@@ -165,6 +328,16 @@ set_theme() {
       echo "Switch lazygit theme to quietlight"
       cp "$HOME/.config/lazygit/config.quietlight.yml" "$HOME/.config/lazygit/config.yml"
       ;;
+    "kanagawa-lotus")
+      echo "Switch lazygit theme to kanagawa lotus"
+      copy_file_atomically "$HOME/.config/lazygit/config.kanagawa-lotus.yml" \
+        "$HOME/.config/lazygit/config.yml" || return 1
+      ;;
+    "rose-pine-dawn")
+      echo "Switch lazygit theme to rose pine dawn"
+      copy_file_atomically "$HOME/.config/lazygit/config.rose-pine-dawn.yml" \
+        "$HOME/.config/lazygit/config.yml" || return 1
+      ;;
     "tokyoday")
       echo "Switch lazygit theme to tokyoday"
       cp "$HOME/.config/lazygit/config.tokyoday.yml" "$HOME/.config/lazygit/config.yml"
@@ -176,6 +349,11 @@ set_theme() {
     "everforest")
       echo "Switch lazygit theme to everforest"
       cp "$HOME/.config/lazygit/config.everforest.yml" "$HOME/.config/lazygit/config.yml"
+      ;;
+    "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      echo "Switch lazygit theme to $theme"
+      copy_file_atomically "$HOME/.config/lazygit/config.${theme}.yml" \
+        "$HOME/.config/lazygit/config.yml" || return 1
       ;;
     *)
       # Default case for unhandled themes
@@ -195,6 +373,18 @@ set_theme() {
       cp "$HOME/.config/kitty/themes/quiet-light.conf" "$HOME/.config/kitty/current_theme.conf"
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/quiet-light.conf" 2>/dev/null
       ;;
+    "kanagawa-lotus")
+      echo "Switch kitty theme to kanagawa lotus"
+      copy_file_atomically "$HOME/.config/kitty/themes/kanagawa-lotus.conf" \
+        "$HOME/.config/kitty/current_theme.conf" || return 1
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/kanagawa-lotus.conf" 2>/dev/null
+      ;;
+    "rose-pine-dawn")
+      echo "Switch kitty theme to rose pine dawn"
+      copy_file_atomically "$HOME/.config/kitty/themes/rose-pine-dawn.conf" \
+        "$HOME/.config/kitty/current_theme.conf" || return 1
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/rose-pine-dawn.conf" 2>/dev/null
+      ;;
     "tokyoday")
       echo "Switch kitty theme to tokyoday"
       cp "$HOME/.config/kitty/themes/tokyo-night-day.conf" "$HOME/.config/kitty/current_theme.conf"
@@ -210,15 +400,45 @@ set_theme() {
       cp "$HOME/.config/kitty/themes/everforest-dark-medium.conf" "$HOME/.config/kitty/current_theme.conf"
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/everforest-dark-medium.conf" 2>/dev/null
       ;;
+    "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      echo "Switch kitty theme to $theme"
+      copy_file_atomically "$HOME/.config/kitty/themes/${theme}.conf" \
+        "$HOME/.config/kitty/current_theme.conf" || return 1
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/${theme}.conf" 2>/dev/null
+      ;;
     *)
       echo "No specific kitty theme for $theme"
       ;;
   esac
 
-  # Apply to Herdr. Full configurations currently exist for these three themes.
+  # Apply to Herdr. Each entry is a complete config so non-theme settings survive.
   case "$theme" in
-    "quietlight"|"tokyonight"|"everforest")
+    "quietlight"|"kanagawa-lotus"|"rose-pine-dawn"|"tokyonight"|"everforest"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       apply_herdr_theme "$theme" || return 1
+      ;;
+  esac
+
+  case "$theme" in
+    "quietlight")
+      apply_yazi_theme "$theme" "vscode-quiet-light" || return 1
+      apply_codex_theme "$theme" || return 1
+      apply_vscode_theme "Quiet Light" || return 1
+      ;;
+    "kanagawa-lotus")
+      apply_yazi_theme "$theme" || return 1
+      apply_codex_theme "$theme" || return 1
+      apply_vscode_theme "Kanagawa Lotus" || return 1
+      ;;
+    "rose-pine-dawn")
+      apply_yazi_theme "$theme" || return 1
+      apply_codex_theme "$theme" || return 1
+      apply_vscode_theme "Rosé Pine Dawn" || return 1
+      ;;
+    "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      local everforest_variant="${theme##*-}"
+      apply_yazi_theme "$theme" || return 1
+      apply_codex_theme "$theme" || return 1
+      apply_vscode_theme "Everforest Light" "$everforest_variant" || return 1
       ;;
   esac
 
@@ -232,8 +452,29 @@ set_theme() {
       "quietlight")
         printf '\033]1337;SetColors=preset=Quiet Light\a' > /dev/tty
         ;;
+      "kanagawa-lotus")
+        printf '\033]1337;SetColors=preset=Kanagawa Lotus\a' > /dev/tty
+        ;;
+      "rose-pine-dawn")
+        # iTerm2 normalizes imported preset filenames to NFD (e + U+0301).
+        printf '\033]1337;SetColors=preset=Rose\314\201 Pine Dawn\a' > /dev/tty
+        ;;
+      "everforest-light-hard")
+        printf '\033]1337;SetColors=preset=Everforest Light Hard\a' > /dev/tty
+        ;;
+      "everforest-light-medium")
+        printf '\033]1337;SetColors=preset=Everforest Light Medium\a' > /dev/tty
+        ;;
+      "everforest-light-soft")
+        printf '\033]1337;SetColors=preset=Everforest Light Soft\a' > /dev/tty
+        ;;
     esac
   fi
+
+  # Publish the state only after all required integrations have succeeded.
+  # Neovim watches its state file and applies the new colors to running instances.
+  write_theme_file "$HOME/.config/nvim/current_theme" "$theme" || return 1
+  write_theme_file "$THEME_FILE" "$theme" || return 1
   
   echo "Theme switched to $theme"
 }

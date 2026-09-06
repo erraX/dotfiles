@@ -1,0 +1,37 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --line-numbers --light --syntax-theme=kanagawa-lotus
+gui:
+  theme:
+    activeBorderColor:
+      - "#4d699b"
+      - bold
+    inactiveBorderColor:
+      - "#a09cac"
+    defaultFgColor:
+      - "#545464"
+    optionsTextColor:
+      - "#597b75"
+    selectedLineBgColor:
+      - "#e7dba0"
+    selectedRangeBgColor:
+      - "#d5cea3"
+    unstagedChangesColor:
+      - "#c84053"
+    cherryPickedCommitBgColor:
+      - "#e7dba0"
+    cherryPickedCommitFgColor:
+      - "#6f894e"
+    searchingActiveBorderColor:
+      - "#cc6d00"
+      - bold
+  authorColors:
+    "*": "#545464"
+    "default": "#545464"
+    "A": "#4d699b"
+    "B": "#6f894e"
+    "C": "#c84053"
+    "D": "#624c83"
+    "E": "#597b75"
+    "F": "#836f4a"

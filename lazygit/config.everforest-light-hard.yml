@@ -1,7 +1,7 @@
 git:
   pagers:
     - colorArg: always
-      pager: delta --paging=never --line-numbers --light --syntax-theme=everforest-light-medium
+      pager: delta --paging=never --line-numbers --light --syntax-theme=everforest-light-hard
 gui:
   theme:
     activeBorderColor:
@@ -14,13 +14,13 @@ gui:
     optionsTextColor:
       - "#2c7459"
     selectedLineBgColor:
-      - "#f4f0d9"
+      - "#f8f5e4"
     selectedRangeBgColor:
-      - "#eaedc8"
+      - "#f0f2d4"
     unstagedChangesColor:
       - "#ad3b4a"
     cherryPickedCommitBgColor:
-      - "#f0f1d2"
+      - "#f3f5d9"
     cherryPickedCommitFgColor:
       - "#47661b"
     searchingActiveBorderColor:

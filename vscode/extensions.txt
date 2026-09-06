@@ -26,9 +26,12 @@ jasonnutter.search-node-modules
 jdinhlife.gruvbox
 kahole.magit
 kenethriera.jb-theme
+metaphore.kanagawa-vscode-color-theme
 ms-python.debugpy
 ms-python.python
 ms-python.vscode-python-envs
+mvllow.rose-pine
+sainnhe.everforest
 sdras.night-owl
 vscodevim.vim
 vspacecode.vspacecode
