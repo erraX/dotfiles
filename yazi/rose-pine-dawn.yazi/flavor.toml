@@ -44,8 +44,8 @@ syntect_theme = ""
 # : Tabs {{{
 
 [tabs]
-active   = { fg = "#575279", bg = "#286983", bold = true }
-inactive = { fg = "#286983", bg = "#575279" }
+active   = { fg = "#faf4ed", bg = "#286983", bold = true }
+inactive = { fg = "#575279", bg = "#f2e9e1" }
 
 # Separator
 sep_inner = { open = "", close = "" }
