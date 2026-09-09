@@ -160,6 +160,7 @@ codex_profile() {
   effort=$(printf '%s' "$settings" | jq -r '.effort')
 
   case "$model" in
+    gpt-6-astra) model_label='A' ;;
     gpt-5.6 | gpt-5.6-sol) model_label='S' ;;
     gpt-5.6-terra) model_label='T' ;;
     gpt-5.6-luna) model_label='L' ;;
