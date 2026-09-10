@@ -1,39 +1,37 @@
 git:
   pagers:
     - colorArg: always
-      pager: delta --paging=never --line-numbers --light --syntax-theme=everforest-light-medium
+      pager: delta --paging=never --line-numbers --light --syntax-theme=rose-pine-dawn
 gui:
   theme:
     activeBorderColor:
-      - "#2e7099"
+      - "#286983"
       - bold
     inactiveBorderColor:
-      - "#829181"
+      - "#cecacd"
     defaultFgColor:
-      - "#5c6a72"
+      - "#464261"
     optionsTextColor:
-      - "#2c7459"
+      - "#907aa9"
     selectedLineBgColor:
-      - "#f4f0d9"
+      - "#dfdad9"
     selectedRangeBgColor:
-      - "#eaedc8"
+      - "#cecacd"
     unstagedChangesColor:
-      - "#ad3b4a"
+      - "#b4637a"
     cherryPickedCommitBgColor:
-      - "#f0f1d2"
+      - "#dfdad9"
     cherryPickedCommitFgColor:
-      - "#47661b"
+      - "#286983"
     searchingActiveBorderColor:
-      - "#8c5a00"
+      - "#9a6700"
       - bold
   authorColors:
-    "*": "#5c6a72"
-    "default": "#5c6a72"
-    "A": "#2e7099"
-    "B": "#2c7459"
-    "C": "#47661b"
-    "D": "#8c5a00"
-    "E": "#9a5200"
-    "F": "#8f537f"
-    "G": "#ad3b4a"
-    "H": "#708089"
+    "*": "#464261"
+    "default": "#464261"
+    "A": "#286983"
+    "B": "#56949f"
+    "C": "#b4637a"
+    "D": "#907aa9"
+    "E": "#797593"
+    "F": "#9a6700"

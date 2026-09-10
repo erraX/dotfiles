@@ -14,11 +14,11 @@ show_agent_labels_on_pane_borders = true
 [ui.sidebar.agents]
 row_gap = 1
 rows = [
-  ["state_icon", "workspace", { token = "tab", fg = "#708089", dim = false }],
+  ["state_icon", "workspace", { token = "tab", fg = "#797593", dim = false }],
   [
-    { token = "agent", fg = "#5c6a72", dim = false },
-    { token = "$profile", fg = "#2e7099", dim = false },
-    { token = "$elapsed", fg = "#47661b", bold = true, dim = false },
+    { token = "agent", fg = "#464261", dim = false },
+    { token = "$profile", fg = "#286983", dim = false },
+    { token = "$elapsed", fg = "#6d8f89", bold = true, dim = false },
   ],
 ]
 
@@ -26,30 +26,9 @@ rows = [
 new_cwd = "follow"
 
 [theme]
-# Everforest Light Medium; backgrounds follow upstream with darker TUI accents.
-name = "terminal"
+# Rosé Pine Dawn, using Herdr's built-in light palette.
+name = "rose-pine-dawn"
 auto_switch = false
-
-[theme.custom]
-sidebar_bg = "#efebd4"
-panel_bg = "#fdf6e3"
-active_row_bg = "#e0dcc7"
-selection_bg = "#eaedc8"
-surface0 = "#f4f0d9"
-surface1 = "#efebd4"
-surface_dim = "#efebd4"
-overlay0 = "#708089"
-overlay1 = "#939f91"
-text = "#5c6a72"
-subtext0 = "#708089"
-accent = "#2e7099"
-mauve = "#8f537f"
-green = "#47661b"
-yellow = "#8c5a00"
-red = "#ad3b4a"
-blue = "#2e7099"
-teal = "#2c7459"
-peach = "#9a5200"
 
 [keys]
 prefix = "ctrl+g"
