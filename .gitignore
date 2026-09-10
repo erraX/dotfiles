@@ -7,3 +7,10 @@
 /herdr/*.log
 /herdr/*.sock
 /herdr/session*.json
+/herdr/plugins/
+/herdr/plugins.json
+/herdr/release-notes.json
+/herdr/examples/
+
+# Neovim logs
+nvim.log
