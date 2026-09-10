@@ -1,0 +1,6 @@
+# Active theme. Switch by editing this line, then cmd+shift+, to reload.
+# Available: ls ~/.config/ghostty/themes  (custom, converted from kitty)
+#            ghostty +list-themes          (built-in)
+theme = rose-pine-dawn
+# Auto-switch with macOS appearance instead:
+# theme = light:rose-pine-dawn,dark:tokyo-night

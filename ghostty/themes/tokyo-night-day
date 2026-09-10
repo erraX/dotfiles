@@ -1,0 +1,23 @@
+# Converted from kitty/themes/tokyo-night-day.conf
+foreground = #3760bf
+background = #e1e2e7
+selection-foreground = #3760bf
+selection-background = #c4c8da
+cursor-color = #3760bf
+cursor-text = #e1e2e7
+palette = 0=#b4b5b9
+palette = 8=#a1a6c5
+palette = 1=#f52a65
+palette = 9=#ff4774
+palette = 2=#587539
+palette = 10=#6a8a3f
+palette = 3=#8c6c3e
+palette = 11=#b15c00
+palette = 4=#2e7de9
+palette = 12=#4094f7
+palette = 5=#9854f1
+palette = 13=#7847bd
+palette = 6=#007197
+palette = 14=#118c74
+palette = 7=#6172b0
+palette = 15=#3760bf

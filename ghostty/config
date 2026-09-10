@@ -1,0 +1,102 @@
+# Ghostty config — migrated from kitty.conf
+# Docs: ghostty +show-config --default --docs
+# Reload: cmd+shift+, (or restart)
+#
+# Philosophy: Ghostty is just the host; Herdr handles workspaces/panes/tabs.
+# So no split/tab keybinds here — everything goes through to Herdr.
+
+# ===== Fonts =====
+
+font-family        = Iosevka Term
+font-style         = Light
+font-style-bold    = Bold
+font-style-italic  = Light Italic
+font-style-bold-italic = Bold Italic
+font-size          = 16
+# kitty: disable_ligatures cursor -> Ghostty has no cursor-only mode; keep ligatures on.
+# Uncomment to disable ligatures entirely:
+# font-feature = -calt, -liga, -dlig
+
+# ===== Cursor =====
+
+cursor-style        = bar
+cursor-style-blink  = false
+# kitty default: cursor takes theme color. Keep that.
+
+# ===== Scrollback =====
+
+# bytes, not lines. 10MB ≈ plenty; Herdr keeps its own scrollback per pane.
+scrollback-limit = 10000000
+
+# ===== Mouse / Clipboard =====
+
+copy-on-select      = clipboard
+mouse-hide-while-typing = true
+link-url            = true
+clipboard-paste-protection = true
+clipboard-paste-bracketed-safe = true
+
+# ===== Bell =====
+
+bell-features = no-audio,no-attention,no-title,no-border
+
+# ===== Window =====
+
+window-padding-x       = 4
+window-padding-y       = 4
+window-padding-balance = true
+window-padding-color   = background
+# "tabs" merges the tab bar into the titlebar; falls back to hidden when only one tab.
+macos-titlebar-style   = tabs
+macos-window-shadow    = true
+window-save-state      = always
+confirm-close-surface  = true
+quit-after-last-window-closed = true
+# Herdr is the multiplexer; don't want Ghostty's native tabs showing up.
+window-new-tab-position = end
+
+# ===== macOS =====
+
+macos-option-as-alt   = true
+macos-auto-secure-input = true
+macos-secure-input-indication = true
+
+# ===== Shell integration =====
+
+shell-integration = detect
+shell-integration-features = cursor,no-sudo,title,path
+
+# ===== Keybindings =====
+#
+# Pass ctrl+tab / ctrl+shift+tab through to Herdr (its tab prev/next).
+# Ghostty native tabs use the macOS-standard cmd+shift+[ / ] and cmd+1..9 instead.
+keybind = ctrl+tab=unbind
+keybind = ctrl+shift+tab=unbind
+
+# Herdr's ctrl+a prefix and ctrl+shift+j/k (agent nav) aren't bound by Ghostty
+# on macOS, so they already go straight through.
+
+# Clear scrollback (kitty: cmd+k clear_terminal scrollback)
+keybind = super+k=clear_screen
+
+# Font size (Ghostty defaults are the same, listed for clarity)
+keybind = super+equal=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
+
+# Config
+keybind = super+comma=open_config
+keybind = super+shift+comma=reload_config
+
+# Native tabs/splits: Ghostty defaults are kept (cmd is the "outer" layer,
+# Herdr's ctrl+g prefix is the "inner" layer; they don't collide).
+#   cmd+t            new tab            cmd+w             close
+#   cmd+shift+[ / ]  prev / next tab    cmd+1..9          goto tab
+#   (ctrl+tab is NOT Ghostty's — it goes to Herdr, see below)
+#   cmd+d / cmd+shift+d  split right / down
+#   cmd+alt+arrows   move between splits
+#   cmd+shift+enter  zoom split
+
+# ===== Theme (keep at bottom) =====
+
+config-file = ?theme
