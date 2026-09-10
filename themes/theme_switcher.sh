@@ -136,6 +136,39 @@ apply_codex_theme() {
   echo "Switch Codex syntax theme to $theme (new or resumed sessions)"
 }
 
+# Usage: apply_pi_theme <pi theme name> <repo|npm package spec>
+# Repo-owned themes are symlinked into pi's global themes directory; the rest
+# come from pi packages installed via `pi install <spec>`.
+apply_pi_theme() {
+  local pi_theme="$1"
+  local provider="$2"
+  local pi_agent_dir="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+  local settings_file="$pi_agent_dir/settings.json"
+
+  command -v python3 >/dev/null 2>&1 || {
+    echo "Cannot switch pi theme: python3 is not installed" >&2
+    return 1
+  }
+
+  [ -f "$settings_file" ] || {
+    echo "Skip pi theme: settings file not found at $settings_file" >&2
+    return 0
+  }
+
+  if [ "$provider" = "repo" ]; then
+    mkdir -p "$pi_agent_dir/themes" || return 1
+    ensure_theme_link "$THEMES_DIR/pi/${pi_theme}.json" \
+      "$pi_agent_dir/themes/${pi_theme}.json" || return 1
+  elif ! grep -Fq "\"${provider}\"" "$settings_file"; then
+    echo "Skip pi theme: install it first with: pi install ${provider}" >&2
+    return 0
+  fi
+
+  python3 "$THEMES_DIR/update_theme_configs.py" pi \
+    --file "$settings_file" --theme "$pi_theme" || return 1
+  echo "Switch pi theme to $pi_theme (new sessions)"
+}
+
 apply_vscode_theme() {
   local theme_name="$1"
   local variant="${2:-}"
@@ -415,6 +448,28 @@ set_theme() {
   case "$theme" in
     "quietlight"|"kanagawa-lotus"|"rose-pine-dawn"|"tokyonight"|"everforest"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       apply_herdr_theme "$theme" || return 1
+      ;;
+  esac
+
+  # Apply to pi. Repo-owned themes live in themes/pi; the rest are pi packages.
+  case "$theme" in
+    "quietlight"|"kanagawa-lotus"|"gruvbox")
+      apply_pi_theme "$theme" repo || return 1
+      ;;
+    "solarized-dark"|"tokyonight")
+      apply_pi_theme "$theme" "npm:@inobit/pi-themes" || return 1
+      ;;
+    "rose-pine-dawn")
+      apply_pi_theme "rosepine-dawn" "npm:@inobit/pi-themes" || return 1
+      ;;
+    "tokyoday")
+      apply_pi_theme "tokyonight-day" "npm:@inobit/pi-themes" || return 1
+      ;;
+    "everforest")
+      apply_pi_theme "everforest-dark-medium" "npm:pi-everforest" || return 1
+      ;;
+    "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      apply_pi_theme "$theme" "npm:pi-everforest" || return 1
       ;;
   esac
 

@@ -64,7 +64,7 @@ def update_json_string_setting(content: str, key: str, value: str) -> str:
 
     closing_brace = content.rfind("}")
     if closing_brace < 0:
-        raise ValueError("VS Code settings file has no closing object brace")
+        raise ValueError("JSON settings file has no closing object brace")
     before = content[:closing_brace].rstrip()
     comma = "" if before.endswith("{") else ","
     indentation_match = re.search(r'(?m)^([ \t]+)"', content)
@@ -89,9 +89,15 @@ def update_vscode(path: Path, theme: str, variant: str | None) -> None:
     atomic_write(path, content)
 
 
+def update_pi(path: Path, theme: str) -> None:
+    content = path.read_text(encoding="utf-8") if path.exists() else "{}\n"
+    content = update_json_string_setting(content, "theme", theme)
+    atomic_write(path, content)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("application", choices=("codex", "vscode"))
+    parser.add_argument("application", choices=("codex", "pi", "vscode"))
     parser.add_argument("--file", required=True, type=Path)
     parser.add_argument("--theme", required=True)
     parser.add_argument("--variant")
@@ -99,6 +105,8 @@ def main() -> None:
 
     if arguments.application == "codex":
         update_codex(arguments.file, arguments.theme)
+    elif arguments.application == "pi":
+        update_pi(arguments.file, arguments.theme)
     else:
         update_vscode(arguments.file, arguments.theme, arguments.variant)
 

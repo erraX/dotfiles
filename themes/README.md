@@ -17,6 +17,7 @@ The complete light-theme profiles cover:
 - Herdr full configuration templates
 - Yazi flavors
 - Codex CLI syntax and diff highlighting
+- pi coding agent TUI themes
 - VS Code's active user settings
 - iTerm2 presets when the matching `.itermcolors` files are imported
 
@@ -25,6 +26,36 @@ non-destructive symlinks. It refuses to replace a different existing asset.
 VS Code needs the extensions listed in `vscode/extensions.txt`. Codex applies a
 new syntax theme to new or resumed sessions; the terminal background still
 comes from Kitty or iTerm2.
+
+## pi
+
+The switcher sets `theme` in `~/.pi/agent/settings.json`; running pi sessions
+keep their theme, new ones pick up the change. Themes come from two places:
+
+- Repository-owned JSON in `pi/`, symlinked into `~/.pi/agent/themes/`:
+  `quietlight`, `kanagawa-lotus`, `gruvbox` (dark soft). These follow the
+  palettes already used by the Kitty and Codex assets in this repository.
+- Open-source pi packages, installed once with `pi install`:
+
+  ```sh
+  pi install npm:@inobit/pi-themes   # solarized-dark, rosepine-dawn, tokyonight, tokyonight-day
+  pi install npm:pi-everforest       # everforest-dark-medium, everforest-light-{hard,medium,soft}
+  ```
+
+  If a package is missing, the switcher prints the install command and leaves
+  the pi theme untouched.
+
+| `sth` theme | pi theme | source |
+|-------------|----------|--------|
+| `solarized-dark` | `solarized-dark` | `@inobit/pi-themes` |
+| `quietlight` | `quietlight` | `pi/quietlight.json` |
+| `kanagawa-lotus` | `kanagawa-lotus` | `pi/kanagawa-lotus.json` |
+| `rose-pine-dawn` | `rosepine-dawn` | `@inobit/pi-themes` |
+| `gruvbox` | `gruvbox` | `pi/gruvbox.json` |
+| `tokyoday` | `tokyonight-day` | `@inobit/pi-themes` |
+| `tokyonight` | `tokyonight` | `@inobit/pi-themes` |
+| `everforest` | `everforest-dark-medium` | `pi-everforest` |
+| `everforest-light-*` | same name | `pi-everforest` |
 
 Upstream sources:
 
