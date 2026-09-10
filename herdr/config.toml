@@ -31,7 +31,7 @@ name = "rose-pine-dawn"
 auto_switch = false
 
 [keys]
-prefix = "ctrl+g"
+prefix = "ctrl+a"
 settings = "prefix+semicolon"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
@@ -45,8 +45,9 @@ next_agent = "ctrl+shift+j"
 focus_agent = "prefix+alt+1..9"
 new_tab = "prefix+n"
 rename_tab = "prefix+comma"
-previous_tab = "ctrl+shift+tab"
-next_tab = "ctrl+tab"
+previous_tab = ["prefix+[", "ctrl+shift+tab"]
+next_tab = ["prefix+]", "ctrl+tab"]
+copy_mode = "prefix+space"
 switch_tab = "prefix+1..9"
 close_tab = ""
 focus_pane_left = "prefix+h"
