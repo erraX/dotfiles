@@ -5,6 +5,37 @@ return {
     'nvim-tree/nvim-web-devicons',
   },
   config = function()
+    -- Take the tab-bar palette from the active colorscheme's own TabLine groups
+    -- instead of bufferline's default recipe (Normal darkened by 25% for tabs and
+    -- 45% for the fill), which reads as near-black on dark themes. The references
+    -- are resolved again on every ColorScheme, so they follow theme switches.
+    local function attr(group, attribute)
+      return { highlight = group, attribute = attribute }
+    end
+    local tab_bg = attr('TabLine', 'bg') -- unselected buffers
+    local fill_bg = attr('TabLineFill', 'bg') -- empty space right of the tabs
+    local sep_fg = attr('TabLine', 'fg') -- '│' between tabs
+
+    local highlights = {
+      buffer_selected = { bold = true, italic = false },
+      separator_selected = { fg = sep_fg },
+      separator_visible = { fg = sep_fg },
+    }
+    -- Every component drawn inside an unselected tab (bufferline's `background_color`).
+    for _, group in ipairs {
+      'background', 'buffer', 'close_button', 'diagnostic', 'duplicate',
+      'error', 'error_diagnostic', 'hint', 'hint_diagnostic', 'info', 'info_diagnostic',
+      'modified', 'numbers', 'pick', 'separator', 'tab', 'tab_close', 'tab_separator',
+      'warning', 'warning_diagnostic',
+    } do
+      highlights[group] = { bg = tab_bg }
+    end
+    highlights.separator.fg = sep_fg
+    -- Everything drawn on the fill (bufferline's `separator_background_color`).
+    for _, group in ipairs { 'fill', 'group_separator', 'offset_separator', 'trunc_marker' } do
+      highlights[group] = { bg = fill_bg }
+    end
+
     require('bufferline').setup {
       options = {
         mode = 'buffers', -- set to "tabs" to only show tabpages instead
@@ -41,19 +72,7 @@ return {
         maximum_length = 15,
         sort_by = 'insert_at_end',
       },
-      highlights = {
-        -- separator fg is intentionally not hardcoded: let bufferline derive it
-        -- from the active colorscheme so it follows theme switches.
-        buffer_selected = {
-          bold = true,
-          italic = false,
-        },
-        -- separator_selected = {},
-        -- tab_selected = {},
-        -- background = {},
-        -- indicator_selected = {},
-        -- fill = {},
-      },
+      highlights = highlights,
     }
   end,
 }
