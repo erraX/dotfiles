@@ -1,0 +1,36 @@
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#908caa", dim = false }],
+  [
+    { token = "agent", fg = "#e0def4", dim = false },
+    { token = "$profile", fg = "#9ccfd8", dim = false },
+    { token = "$elapsed", fg = "#f6c177", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Rosé Pine Moon; Herdr only ships rose-pine (main) and rose-pine-dawn built in.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#232136"
+panel_bg = "#2a273f"
+active_row_bg = "#44415a"
+selection_bg = "#56526e"
+surface0 = "#393552"
+surface1 = "#44415a"
+surface_dim = "#2a283e"
+overlay0 = "#6e6a86"
+overlay1 = "#908caa"
+text = "#e0def4"
+subtext0 = "#908caa"
+accent = "#9ccfd8"
+mauve = "#c4a7e7"
+green = "#3e8fb0"
+yellow = "#f6c177"
+red = "#eb6f92"
+blue = "#9ccfd8"
+teal = "#9ccfd8"
+peach = "#ea9a97"

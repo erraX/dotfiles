@@ -6,12 +6,13 @@ Symlink this directory to `~/.config/themes`, then use:
 sth list
 sth set kanagawa-lotus
 sth set rose-pine-dawn
+sth set rose-pine-moon
 sth set everforest-light-hard
 sth set everforest-light-medium
 sth set everforest-light-soft
 ```
 
-The complete light-theme profiles cover:
+The complete theme profiles (the light ones plus Rosé Pine Moon) cover:
 
 - Kitty, Ghostty, tmux, fzf, Neovim, Lazygit, and its delta pager
 - Herdr (generated `config.toml`, see below)
@@ -67,7 +68,7 @@ again to refresh the copy.
 Themes come from two places:
 
 - Repository-owned JSON in `pi/`: `quietlight`, `kanagawa-lotus`, `gruvbox`
-  (dark soft). These follow the palettes already used by the Kitty and Codex
+  (dark soft), `rose-pine-moon`. These follow the palettes already used by the Kitty and Codex
   assets in this repository.
 - Open-source pi packages, installed once with `pi install`:
 
@@ -85,6 +86,7 @@ Themes come from two places:
 | `quietlight` | `quietlight` | `pi/quietlight.json` |
 | `kanagawa-lotus` | `kanagawa-lotus` | `pi/kanagawa-lotus.json` |
 | `rose-pine-dawn` | `rosepine-dawn` | `@inobit/pi-themes` |
+| `rose-pine-moon` | `rose-pine-moon` | `pi/rose-pine-moon.json` (`@inobit/pi-themes` only ships main + dawn) |
 | `gruvbox` | `gruvbox` | `pi/gruvbox.json` |
 | `tokyoday` | `tokyonight-day` | `@inobit/pi-themes` |
 | `tokyonight` | `tokyonight` | `@inobit/pi-themes` |
@@ -95,7 +97,12 @@ Upstream sources:
 
 - Kanagawa.nvim `bb85e4b` for the Lotus palette, Neovim plugin, and Kitty base
 - Rosé Pine Neovim `ff483051`, Kitty `efd4f01c`, TextMate `6d556734`, and iTerm `4801702a`
-- Yazi's indexed Kanagawa Lotus `adc1be6a` and Rosé Pine Dawn `d82f54f7` flavors
+- Rosé Pine Moon: upstream `rose-pine/kitty`, `rose-pine/tm-theme` and `rose-pine/iterm`
+  dist files as of 2026-09; Herdr and pi palettes hand-mapped from the official Moon
+  variables since neither ships a Moon variant
+- Yazi's indexed Kanagawa Lotus `adc1be6a` and Rosé Pine Dawn `d82f54f7` flavors;
+  Rosé Pine Moon from `Mintass/rose-pine-moon.yazi` with the same inactive-tab
+  contrast fix as Dawn
 - `mbadolato/iTerm2-Color-Schemes` for the Kanagawa Lotus iTerm2 preset
 - VS Code extensions `metaphore.kanagawa-vscode-color-theme` and `mvllow.rose-pine`
 - Everforest `85a86eb6` hard, medium, and soft light palettes; TUI-only semantic

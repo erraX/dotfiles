@@ -82,6 +82,15 @@ M.themes = {
     vim.o.background = 'light'
     vim.cmd.colorscheme 'rose-pine-dawn'
   end,
+  ['rose-pine-moon'] = function()
+    require('rose-pine').setup {
+      variant = 'moon',
+      dark_variant = 'moon',
+      styles = { italic = false, transparency = false },
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'rose-pine-moon'
+  end,
   ['tokyonight'] = function()
     require('tokyonight').setup {
       style = 'storm',

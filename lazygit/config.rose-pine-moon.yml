@@ -1,0 +1,37 @@
+git:
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --line-numbers --dark --syntax-theme=rose-pine-moon
+gui:
+  theme:
+    activeBorderColor:
+      - "#9ccfd8"
+      - bold
+    inactiveBorderColor:
+      - "#56526e"
+    defaultFgColor:
+      - "#e0def4"
+    optionsTextColor:
+      - "#c4a7e7"
+    selectedLineBgColor:
+      - "#44415a"
+    selectedRangeBgColor:
+      - "#56526e"
+    unstagedChangesColor:
+      - "#eb6f92"
+    cherryPickedCommitBgColor:
+      - "#44415a"
+    cherryPickedCommitFgColor:
+      - "#9ccfd8"
+    searchingActiveBorderColor:
+      - "#f6c177"
+      - bold
+  authorColors:
+    "*": "#e0def4"
+    "default": "#e0def4"
+    "A": "#9ccfd8"
+    "B": "#3e8fb0"
+    "C": "#eb6f92"
+    "D": "#c4a7e7"
+    "E": "#908caa"
+    "F": "#f6c177"

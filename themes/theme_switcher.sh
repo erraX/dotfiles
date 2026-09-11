@@ -5,7 +5,7 @@ DOTFILES_DIR=$(dirname "$THEMES_DIR")
 THEME_FILE="$THEMES_DIR/current_theme"
 
 # Available themes
-THEMES=("solarized-dark" "quietlight" "kanagawa-lotus" "rose-pine-dawn" "gruvbox" "tokyoday" "tokyonight" "everforest" "everforest-light-hard" "everforest-light-medium" "everforest-light-soft")
+THEMES=("solarized-dark" "quietlight" "kanagawa-lotus" "rose-pine-dawn" "rose-pine-moon" "gruvbox" "tokyoday" "tokyonight" "everforest" "everforest-light-hard" "everforest-light-medium" "everforest-light-soft")
 
 is_valid_theme() {
   local requested_theme="$1"
@@ -370,7 +370,7 @@ set_theme() {
 
   # Install custom syntax assets before changing any active application files.
   case "$theme" in
-    "kanagawa-lotus"|"rose-pine-dawn"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+    "kanagawa-lotus"|"rose-pine-dawn"|"rose-pine-moon"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       install_bat_theme "$theme" || return 1
       ;;
   esac
@@ -390,8 +390,8 @@ set_theme() {
       "kanagawa-lotus")
         tmux source-file "$HOME/.config/themes/tmux/kanagawa-lotus.tmux" || return 1
         ;;
-      "rose-pine-dawn")
-        tmux source-file "$HOME/.config/themes/tmux/rose-pine-dawn.tmux" || return 1
+      "rose-pine-dawn"|"rose-pine-moon")
+        tmux source-file "$HOME/.config/themes/tmux/${theme}.tmux" || return 1
         ;;
       "tokyoday")
         tmux source-file "$HOME/.config/themes/tmux/tokyoday.tmux"
@@ -437,11 +437,11 @@ set_theme() {
         "$HOME/.config/themes/current_fzf_theme" || return 1
       source "$HOME/.config/themes/fzf/kanagawa-lotus.sh"
       ;;
-    "rose-pine-dawn")
-      echo "Switch fzf theme to rose pine dawn"
-      copy_file_atomically "$HOME/.config/themes/fzf/rose-pine-dawn.sh" \
+    "rose-pine-dawn"|"rose-pine-moon")
+      echo "Switch fzf theme to $theme"
+      copy_file_atomically "$HOME/.config/themes/fzf/${theme}.sh" \
         "$HOME/.config/themes/current_fzf_theme" || return 1
-      source "$HOME/.config/themes/fzf/rose-pine-dawn.sh"
+      source "$HOME/.config/themes/fzf/${theme}.sh"
       ;;
     "tokyoday")
       echo "Switch fzf theme to tokyoday"
@@ -495,9 +495,9 @@ set_theme() {
       copy_file_atomically "$HOME/.config/lazygit/config.kanagawa-lotus.yml" \
         "$HOME/.config/lazygit/config.yml" || return 1
       ;;
-    "rose-pine-dawn")
-      echo "Switch lazygit theme to rose pine dawn"
-      copy_file_atomically "$HOME/.config/lazygit/config.rose-pine-dawn.yml" \
+    "rose-pine-dawn"|"rose-pine-moon")
+      echo "Switch lazygit theme to $theme"
+      copy_file_atomically "$HOME/.config/lazygit/config.${theme}.yml" \
         "$HOME/.config/lazygit/config.yml" || return 1
       ;;
     "tokyoday")
@@ -541,11 +541,11 @@ set_theme() {
         "$HOME/.config/kitty/current_theme.conf" || return 1
       kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/kanagawa-lotus.conf" 2>/dev/null
       ;;
-    "rose-pine-dawn")
-      echo "Switch kitty theme to rose pine dawn"
-      copy_file_atomically "$HOME/.config/kitty/themes/rose-pine-dawn.conf" \
+    "rose-pine-dawn"|"rose-pine-moon")
+      echo "Switch kitty theme to $theme"
+      copy_file_atomically "$HOME/.config/kitty/themes/${theme}.conf" \
         "$HOME/.config/kitty/current_theme.conf" || return 1
-      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/rose-pine-dawn.conf" 2>/dev/null
+      kitty @ set-colors --all --configured "$HOME/.config/kitty/themes/${theme}.conf" 2>/dev/null
       ;;
     "tokyoday")
       echo "Switch kitty theme to tokyoday"
@@ -578,7 +578,7 @@ set_theme() {
     "gruvbox")        apply_ghostty_theme "gruvbox-dark-soft" || return 1 ;;
     "quietlight")     apply_ghostty_theme "quiet-light" || return 1 ;;
     "kanagawa-lotus") apply_ghostty_theme "kanagawa-lotus" || return 1 ;;
-    "rose-pine-dawn") apply_ghostty_theme "rose-pine-dawn" || return 1 ;;
+    "rose-pine-dawn"|"rose-pine-moon") apply_ghostty_theme "$theme" || return 1 ;;
     "tokyoday")       apply_ghostty_theme "tokyo-night-day" || return 1 ;;
     "tokyonight")     apply_ghostty_theme "tokyo-night" || return 1 ;;
     "everforest")     apply_ghostty_theme "everforest-dark-medium" || return 1 ;;
@@ -589,14 +589,14 @@ set_theme() {
 
   # Apply to Herdr (config.base.toml + themes/<theme>.toml -> config.toml).
   case "$theme" in
-    "quietlight"|"kanagawa-lotus"|"rose-pine-dawn"|"tokyonight"|"everforest"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+    "quietlight"|"kanagawa-lotus"|"rose-pine-dawn"|"rose-pine-moon"|"tokyonight"|"everforest"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       apply_herdr_theme "$theme" || return 1
       ;;
   esac
 
   # Apply to pi. Repo-owned themes live in themes/pi; the rest are pi packages.
   case "$theme" in
-    "quietlight"|"kanagawa-lotus"|"gruvbox")
+    "quietlight"|"kanagawa-lotus"|"gruvbox"|"rose-pine-moon")
       apply_pi_theme "$theme" repo || return 1
       ;;
     "solarized-dark"|"tokyonight")
@@ -632,6 +632,11 @@ set_theme() {
       apply_codex_theme "$theme" || return 1
       apply_vscode_theme "Rosé Pine Dawn" || return 1
       ;;
+    "rose-pine-moon")
+      apply_yazi_theme "$theme" || return 1
+      apply_codex_theme "$theme" || return 1
+      apply_vscode_theme "Rosé Pine Moon" || return 1
+      ;;
     "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       local everforest_variant="${theme##*-}"
       apply_yazi_theme "$theme" || return 1
@@ -656,6 +661,9 @@ set_theme() {
       "rose-pine-dawn")
         # iTerm2 normalizes imported preset filenames to NFD (e + U+0301).
         printf '\033]1337;SetColors=preset=Rose\314\201 Pine Dawn\a' > /dev/tty
+        ;;
+      "rose-pine-moon")
+        printf '\033]1337;SetColors=preset=Rose\314\201 Pine Moon\a' > /dev/tty
         ;;
       "everforest-light-hard")
         printf '\033]1337;SetColors=preset=Everforest Light Hard\a' > /dev/tty
