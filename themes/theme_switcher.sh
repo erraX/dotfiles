@@ -6,6 +6,8 @@ THEME_FILE="$THEMES_DIR/current_theme"
 
 # Available themes
 THEMES=("solarized-dark" "quietlight" "kanagawa-lotus" "rose-pine-dawn" "rose-pine-moon" "gruvbox" "tokyoday" "tokyonight" "everforest" "everforest-light-hard" "everforest-light-medium" "everforest-light-soft")
+# Partial profiles: Ghostty (built-in theme), Herdr and Neovim only for now.
+THEMES+=("kanagawa-dragon" "catppuccin-frappe" "terafox" "nordfox" "gruvbox-material")
 
 is_valid_theme() {
   local requested_theme="$1"
@@ -584,12 +586,21 @@ set_theme() {
     "everforest")     apply_ghostty_theme "everforest-dark-medium" || return 1 ;;
     "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       apply_ghostty_theme "$theme" || return 1 ;;
+    # Ghostty built-ins (ghostty +list-themes); no local conversion needed.
+    "kanagawa-dragon")   apply_ghostty_theme "Kanagawa Dragon" || return 1 ;;
+    "catppuccin-frappe") apply_ghostty_theme "Catppuccin Frappe" || return 1 ;;
+    "terafox")           apply_ghostty_theme "Terafox" || return 1 ;;
+    "nordfox")           apply_ghostty_theme "Nordfox" || return 1 ;;
+    "gruvbox-material")  apply_ghostty_theme "Gruvbox Material Dark" || return 1 ;;
     *) echo "No specific Ghostty theme for $theme" ;;
   esac
 
   # Apply to Herdr (config.base.toml + themes/<theme>.toml -> config.toml).
   case "$theme" in
     "quietlight"|"kanagawa-lotus"|"rose-pine-dawn"|"rose-pine-moon"|"tokyonight"|"everforest"|"everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
+      apply_herdr_theme "$theme" || return 1
+      ;;
+    "kanagawa-dragon"|"catppuccin-frappe"|"terafox"|"nordfox"|"gruvbox-material")
       apply_herdr_theme "$theme" || return 1
       ;;
   esac

@@ -1,0 +1,36 @@
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#abb1bb", dim = false }],
+  [
+    { token = "agent", fg = "#cdcecf", dim = false },
+    { token = "$profile", fg = "#88c0d0", dim = false },
+    { token = "$elapsed", fg = "#ebcb8b", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Nordfox; palette from EdenEast/nightfox.nvim palette/nordfox.lua.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#232831"
+panel_bg = "#2e3440"
+active_row_bg = "#39404f"
+selection_bg = "#3e4a5b"
+surface0 = "#39404f"
+surface1 = "#444c5e"
+surface_dim = "#232831"
+overlay0 = "#5a657d"
+overlay1 = "#7e8188"
+text = "#cdcecf"
+subtext0 = "#abb1bb"
+accent = "#81a1c1"
+mauve = "#b48ead"
+green = "#a3be8c"
+yellow = "#ebcb8b"
+red = "#bf616a"
+blue = "#81a1c1"
+teal = "#88c0d0"
+peach = "#c9826b"

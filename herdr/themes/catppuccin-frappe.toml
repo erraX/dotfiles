@@ -1,0 +1,36 @@
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#a5adce", dim = false }],
+  [
+    { token = "agent", fg = "#c6d0f5", dim = false },
+    { token = "$profile", fg = "#8caaee", dim = false },
+    { token = "$elapsed", fg = "#e5c890", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Catppuccin Frappe; official palette (Herdr's built-in catppuccin is a different flavor).
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#292c3c"
+panel_bg = "#303446"
+active_row_bg = "#414559"
+selection_bg = "#51576d"
+surface0 = "#414559"
+surface1 = "#51576d"
+surface_dim = "#232634"
+overlay0 = "#737994"
+overlay1 = "#838ba7"
+text = "#c6d0f5"
+subtext0 = "#a5adce"
+accent = "#8caaee"
+mauve = "#ca9ee6"
+green = "#a6d189"
+yellow = "#e5c890"
+red = "#e78284"
+blue = "#8caaee"
+teal = "#81c8be"
+peach = "#ef9f76"

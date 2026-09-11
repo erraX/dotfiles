@@ -99,6 +99,48 @@ M.themes = {
     vim.o.background = 'dark'
     vim.cmd.colorscheme 'tokyonight-storm'
   end,
+  ['kanagawa-dragon'] = function()
+    require('kanagawa').setup {
+      theme = 'dragon',
+      background = { dark = 'dragon', light = 'lotus' },
+      commentStyle = { italic = false },
+      keywordStyle = { italic = false },
+      terminalColors = true,
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'kanagawa-dragon'
+  end,
+  ['catppuccin-frappe'] = function()
+    require('catppuccin').setup {
+      flavour = 'frappe',
+      no_italic = true,
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'catppuccin-frappe'
+  end,
+  ['terafox'] = function()
+    require('nightfox').setup {
+      options = { styles = { comments = 'NONE', keywords = 'NONE' } },
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'terafox'
+  end,
+  ['nordfox'] = function()
+    require('nightfox').setup {
+      options = { styles = { comments = 'NONE', keywords = 'NONE' } },
+    }
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'nordfox'
+  end,
+  ['gruvbox-material'] = function()
+    vim.g.gruvbox_material_background = 'medium'
+    vim.g.gruvbox_material_foreground = 'material'
+    vim.g.gruvbox_material_enable_italic = 0
+    vim.g.gruvbox_material_disable_italic_comment = 1
+    vim.g.gruvbox_material_better_performance = 1
+    vim.o.background = 'dark'
+    vim.cmd.colorscheme 'gruvbox-material'
+  end,
   -- Add more themes as needed
 }
 

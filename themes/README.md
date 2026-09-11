@@ -22,6 +22,17 @@ The complete theme profiles (the light ones plus Rosé Pine Moon) cover:
 - VS Code's active user settings
 - iTerm2 presets when the matching `.itermcolors` files are imported
 
+## Partial dark profiles (Ghostty, Herdr, Neovim only)
+
+`kanagawa-dragon`, `catppuccin-frappe`, `terafox`, `nordfox` and
+`gruvbox-material` (dark medium) currently switch only Ghostty, Herdr and
+Neovim; kitty, tmux, fzf, Lazygit, Yazi, Codex, pi and VS Code keep whatever
+was active before. Ghostty uses its built-in themes, Neovim the upstream
+plugins (`catppuccin/nvim`, `EdenEast/nightfox.nvim`,
+`sainnhe/gruvbox-material`, `rebelot/kanagawa.nvim`), and the Herdr
+`[theme.custom]` fragments copy the palettes straight from those plugins'
+palette sources since Herdr ships no matching built-ins.
+
 The switcher installs repository-owned Yazi, bat, and Codex theme assets as
 non-destructive symlinks. It refuses to replace a different existing asset.
 VS Code needs the extensions listed in `vscode/extensions.txt`. Codex applies a
