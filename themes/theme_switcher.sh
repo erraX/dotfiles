@@ -192,14 +192,31 @@ apply_pi_theme() {
   # themes by their JSON name, so this keeps /settings showing (and
   # re-selecting) "current" instead of silently persisting the real name and
   # unpinning settings.json.
+  #
+  # themes/pi/overrides/<name>.json, if present, is a partial theme whose
+  # "vars"/"colors" keys are merged on top, so package themes can be tweaked
+  # without forking them (upstream stays the source of truth).
   temp_file=$(mktemp "${target}.XXXXXX") || return 1
-  python3 - "$source" "$temp_file" "$PI_LIVE_THEME" <<'EOF' || {
-import json, sys
-src, dst, live_name = sys.argv[1:4]
+  python3 - "$source" "$temp_file" "$PI_LIVE_THEME" "$THEMES_DIR/pi/overrides/${pi_theme}.json" <<'EOF' || {
+import json, os, sys
+src, dst, live_name, override = sys.argv[1:5]
 with open(src, encoding="utf-8") as f:
     data = json.load(f)
 if not isinstance(data, dict) or "colors" not in data:
     sys.exit(f"not a pi theme: {src}")
+if os.path.isfile(override):
+    with open(override, encoding="utf-8") as f:
+        patch = json.load(f)
+    unknown = set(patch) - {"$schema", "vars", "colors", "export", "_comment"}
+    if unknown:
+        sys.exit(f"override {override}: unsupported top-level keys {sorted(unknown)}")
+    for section in ("vars", "colors", "export"):
+        if section in patch:
+            data.setdefault(section, {}).update(patch[section])
+    missing = [v for v in patch.get("colors", {}).values()
+               if isinstance(v, str) and not v.startswith("#") and v and v not in data.get("vars", {})]
+    if missing:
+        sys.exit(f"override {override}: unknown var references {missing}")
 # Theme schema has additionalProperties=false, so only "name" is rewritten.
 data["name"] = live_name
 with open(dst, "w", encoding="utf-8") as f:

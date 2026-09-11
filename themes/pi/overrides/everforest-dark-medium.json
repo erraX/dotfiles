@@ -1,0 +1,7 @@
+{
+  "_comment": "Upstream maps tool blocks to Everforest's diff/visual highlight backgrounds (bg_green/bg2), which pop out of the text flow. Use the neutral bg1 layer, same as userMessageBg; errors keep bg_red.",
+  "colors": {
+    "toolPendingBg": "bg1",
+    "toolSuccessBg": "bg1"
+  }
+}
