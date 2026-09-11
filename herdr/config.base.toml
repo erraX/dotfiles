@@ -1,3 +1,7 @@
+# Herdr base config — everything EXCEPT theme colors.
+# `sth set <theme>` concatenates this file + themes/<theme>.toml into config.toml.
+# Edit THIS file (not config.toml) for keys/ui/terminal changes; config.toml is generated.
+
 [ui]
 agent_panel_sort = "spaces"
 tab_bar_right = [
@@ -11,48 +15,11 @@ window_title = "{workspace} · {tab}"
 
 status_indicators = "symbols"
 show_agent_labels_on_pane_borders = true
-[ui.sidebar.agents]
-row_gap = 1
-rows = [
-  ["state_icon", "workspace", { token = "tab", fg = "#b6c6b2", dim = false }],
-  [
-    { token = "agent", fg = "#aeb7a6", dim = false },
-    { token = "$profile", fg = "#a7c080", dim = false },
-    { token = "$elapsed", fg = "#dbbc7f", bold = true, dim = false },
-  ],
-]
-
 [terminal]
 new_cwd = "follow"
 
-[theme]
-# Everforest Dark Medium, aligned with Kitty's Everforest theme.
-name = "terminal"
-auto_switch = false
-
-[theme.custom]
-sidebar_bg = "#29363a"
-panel_bg = "#2d353b"
-active_row_bg = "#40574f"
-selection_bg = "#536b61"
-surface0 = "#354347"
-surface1 = "#3f4f52"
-surface_dim = "#243034"
-overlay0 = "#576a64"
-overlay1 = "#74867c"
-text = "#d8d1b8"
-subtext0 = "#aeb7a6"
-accent = "#a7c080"
-mauve = "#d699b6"
-green = "#a7c080"
-yellow = "#dbbc7f"
-red = "#e67e80"
-blue = "#7fbbb3"
-teal = "#83c092"
-peach = "#e69875"
-
 [keys]
-prefix = "ctrl+g"
+prefix = "ctrl+a"
 settings = "prefix+semicolon"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
@@ -66,8 +33,9 @@ next_agent = "ctrl+shift+j"
 focus_agent = "prefix+alt+1..9"
 new_tab = "prefix+n"
 rename_tab = "prefix+comma"
-previous_tab = "ctrl+shift+tab"
-next_tab = "ctrl+tab"
+previous_tab = ["prefix+[", "ctrl+shift+tab"]
+next_tab = ["prefix+]", "ctrl+tab"]
+copy_mode = "prefix+space"
 switch_tab = "prefix+1..9"
 close_tab = ""
 focus_pane_left = "prefix+h"

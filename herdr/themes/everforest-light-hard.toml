@@ -1,5 +1,13 @@
-# Everforest Light Hard for Herdr.
-# Backgrounds follow sainnhe/everforest; semantic accents are darkened for TUI text.
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#708089", dim = false }],
+  [
+    { token = "agent", fg = "#5c6a72", dim = false },
+    { token = "$profile", fg = "#2e7099", dim = false },
+    { token = "$elapsed", fg = "#47661b", bold = true, dim = false },
+  ],
+]
 
 [theme]
 # Everforest Light Hard; backgrounds follow upstream with darker TUI accents.
@@ -26,13 +34,3 @@ red = "#ad3b4a"
 blue = "#2e7099"
 teal = "#2c7459"
 peach = "#9a5200"
-
-[ui.sidebar.agents]
-rows = [
-  ["state_icon", "workspace", { token = "tab", fg = "#708089", dim = false }],
-  [
-    { token = "agent", fg = "#5c6a72", dim = false },
-    { token = "$profile", fg = "#2e7099", dim = false },
-    { token = "$elapsed", fg = "#47661b", bold = true, dim = false },
-  ],
-]
