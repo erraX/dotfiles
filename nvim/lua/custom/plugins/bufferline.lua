@@ -42,9 +42,8 @@ return {
         sort_by = 'insert_at_end',
       },
       highlights = {
-        separator = {
-          fg = '#434C5E',
-        },
+        -- separator fg is intentionally not hardcoded: let bufferline derive it
+        -- from the active colorscheme so it follows theme switches.
         buffer_selected = {
           bold = true,
           italic = false,

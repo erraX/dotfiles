@@ -125,6 +125,13 @@ function M.apply_theme(theme)
   end
 
   if M.themes[theme] then
+    -- Wipe highlight groups defined *before* the colorscheme loads (e.g. bufferline's
+    -- `default` highlights, derived from Neovim's built-in scheme at plugin setup).
+    -- Most colorschemes only `hi clear` when g:colors_name is already set, so on a
+    -- fresh start those stale groups would survive and `hi default` re-application
+    -- on ColorScheme could not replace them.
+    vim.cmd.highlight 'clear'
+
     local ok, err = pcall(M.themes[theme])
     if not ok then
       vim.notify('Failed to apply theme "' .. theme .. '": ' .. err, vim.log.levels.ERROR)
