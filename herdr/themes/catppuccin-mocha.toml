@@ -1,0 +1,36 @@
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "workspace", { token = "tab", fg = "#a6adc8", dim = false }],
+  [
+    { token = "agent", fg = "#cdd6f4", dim = false },
+    { token = "$profile", fg = "#89b4fa", dim = false },
+    { token = "$elapsed", fg = "#f9e2af", bold = true, dim = false },
+  ],
+]
+
+[theme]
+# Catppuccin Mocha; official palette (catppuccin/nvim palettes/mocha.lua), same mapping as the Frappe fragment.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+sidebar_bg = "#181825"
+panel_bg = "#1e1e2e"
+active_row_bg = "#313244"
+selection_bg = "#45475a"
+surface0 = "#313244"
+surface1 = "#45475a"
+surface_dim = "#11111b"
+overlay0 = "#6c7086"
+overlay1 = "#7f849c"
+text = "#cdd6f4"
+subtext0 = "#a6adc8"
+accent = "#89b4fa"
+mauve = "#cba6f7"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+red = "#f38ba8"
+blue = "#89b4fa"
+teal = "#94e2d5"
+peach = "#fab387"

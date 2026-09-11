@@ -8,6 +8,15 @@ local function apply_everforest(background, contrast)
   vim.cmd.colorscheme 'everforest'
 end
 
+local function apply_catppuccin(flavour, background)
+  require('catppuccin').setup {
+    flavour = flavour,
+    no_italic = true,
+  }
+  vim.o.background = background
+  vim.cmd.colorscheme('catppuccin-' .. flavour)
+end
+
 -- Function to read current theme from file
 function M.get_current_theme()
   local theme_file = vim.fn.expand '~/.config/nvim/current_theme'
@@ -110,13 +119,17 @@ M.themes = {
     vim.o.background = 'dark'
     vim.cmd.colorscheme 'kanagawa-dragon'
   end,
+  ['catppuccin-latte'] = function()
+    apply_catppuccin('latte', 'light')
+  end,
   ['catppuccin-frappe'] = function()
-    require('catppuccin').setup {
-      flavour = 'frappe',
-      no_italic = true,
-    }
-    vim.o.background = 'dark'
-    vim.cmd.colorscheme 'catppuccin-frappe'
+    apply_catppuccin('frappe', 'dark')
+  end,
+  ['catppuccin-macchiato'] = function()
+    apply_catppuccin('macchiato', 'dark')
+  end,
+  ['catppuccin-mocha'] = function()
+    apply_catppuccin('mocha', 'dark')
   end,
   ['terafox'] = function()
     require('nightfox').setup {
