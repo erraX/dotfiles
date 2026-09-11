@@ -1,32 +1,51 @@
 git:
   pagers:
-    # ANSI lets Delta use the official Tokyo Night terminal palette.
+    # Delta does not bundle an Everforest syntax theme; ANSI follows the
+    # terminal palette when Everforest is active in Kitty.
     - colorArg: always
       pager: delta --paging=never --line-numbers --syntax-theme=ansi
 gui:
-  nerdFontsVersion: "3"
   theme:
+    # Borders
     activeBorderColor:
-      - "#ff9e64"
-      - "bold"
+      - "#7fbbb3"   # blue
+      - bold
     inactiveBorderColor:
-      - "#29a4bd"
-    searchingActiveBorderColor:
-      - "#ff9e64"
-      - "bold"
-    optionsTextColor:
-      - "#7aa2f7"
-    selectedLineBgColor:
-      - "#2e3c64"
-    cherryPickedCommitFgColor:
-      - "#7aa2f7"
-    cherryPickedCommitBgColor:
-      - "#bb9af7"
-    markedBaseCommitFgColor:
-      - "#7aa2f7"
-    markedBaseCommitBgColor:
-      - "#e0af68"
-    unstagedChangesColor:
-      - "#db4b4b"
+      - "#4f585e"   # bg4
+
+    # Panels / text
     defaultFgColor:
-      - "#c0caf5"
+      - "#d3c6aa"   # fg
+    optionsTextColor:
+      - "#83c092"   # aqua
+
+    # Selection / focus
+    selectedLineBgColor:
+      - "#343f44"   # bg1
+    selectedRangeBgColor:
+      - "#543a48"   # bg_visual
+
+    # Git states
+    unstagedChangesColor:
+      - "#e67e80"   # red
+    cherryPickedCommitBgColor:
+      - "#425047"   # bg_green
+    cherryPickedCommitFgColor:
+      - "#a7c080"   # green
+
+    # Search highlight
+    searchingActiveBorderColor:
+      - "#dbbc7f"   # yellow
+      - bold
+
+  authorColors:
+    "*": "#d3c6aa"
+    "default": "#d3c6aa"
+    "A": "#7fbbb3"  # blue
+    "B": "#83c092"  # aqua
+    "C": "#a7c080"  # green
+    "D": "#dbbc7f"  # yellow
+    "E": "#e69875"  # orange
+    "F": "#d699b6"  # purple
+    "G": "#e67e80"  # red
+    "H": "#9da9a0"  # grey2
