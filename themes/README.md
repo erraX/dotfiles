@@ -13,8 +13,8 @@ sth set everforest-light-soft
 
 The complete light-theme profiles cover:
 
-- Kitty, tmux, fzf, Neovim, Lazygit, and its delta pager
-- Herdr full configuration templates
+- Kitty, Ghostty, tmux, fzf, Neovim, Lazygit, and its delta pager
+- Herdr (generated `config.toml`, see below)
 - Yazi flavors
 - Codex CLI syntax and diff highlighting
 - pi coding agent TUI themes
@@ -27,14 +27,48 @@ VS Code needs the extensions listed in `vscode/extensions.txt`. Codex applies a
 new syntax theme to new or resumed sessions; the terminal background still
 comes from Kitty or iTerm2.
 
+## Herdr
+
+`~/.config/herdr/config.toml` is **generated** on every `sth set`:
+
+```
+herdr/config.base.toml      keys, ui, terminal, toast… — edit this one
++ herdr/themes/<theme>.toml  [ui.sidebar.agents] rows, [theme], [theme.custom]
+= herdr/config.toml          do not edit; a theme switch overwrites it
+```
+
+So prefix/keybinding changes go in `config.base.toml` only and survive every
+theme switch. The switcher validates the concatenation with `tomllib` before
+replacing the file, then runs `herdr server reload-config`.
+
+## Ghostty
+
+`ghostty/config` ends with `config-file = ?theme`; the switcher rewrites that
+one-line `ghostty/theme` include and reloads a running Ghostty via its
+AppleScript `perform action "reload_config"` (macOS). Theme names mirror the
+kitty map (`everforest` → `everforest-dark-medium`, `quietlight` →
+`quiet-light`, …) and resolve from `ghostty/themes/` first, then Ghostty's
+built-ins. Regenerate the custom themes from kitty with
+`ghostty/kitty2ghostty-theme.sh`. `solarized-dark` is unmapped, same as kitty.
+
 ## pi
 
-The switcher sets `theme` in `~/.pi/agent/settings.json`; running pi sessions
-keep their theme, new ones pick up the change. Themes come from two places:
+Switching is **live**: running pi sessions repaint within ~100ms. pi does not
+watch `settings.json`, but it does hot-reload the active custom theme file, so
+the switcher pins `settings.json` to `"theme": "current"` (once) and on every
+switch atomically replaces `~/.pi/agent/themes/current.json` with a copy of the
+real theme, with its JSON `name` rewritten to `current` so pi registers and
+pre-selects it under that name in `/settings`. Consequences: `/settings` shows
+`current` (re-selecting it is harmless; picking any other theme there unpins
+`settings.json` until the next `sth set`), sessions started before the pin was
+applied need one restart, and after upgrading a theme package run `sth set`
+again to refresh the copy.
 
-- Repository-owned JSON in `pi/`, symlinked into `~/.pi/agent/themes/`:
-  `quietlight`, `kanagawa-lotus`, `gruvbox` (dark soft). These follow the
-  palettes already used by the Kitty and Codex assets in this repository.
+Themes come from two places:
+
+- Repository-owned JSON in `pi/`: `quietlight`, `kanagawa-lotus`, `gruvbox`
+  (dark soft). These follow the palettes already used by the Kitty and Codex
+  assets in this repository.
 - Open-source pi packages, installed once with `pi install`:
 
   ```sh
