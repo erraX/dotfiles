@@ -361,8 +361,16 @@ EOF
 
   # Reload running Ghostty (macOS only). Skip silently if it isn't running so
   # osascript doesn't launch it.
-  if [ "$(uname -s)" = "Darwin" ] && pgrep -xq ghostty; then
-    osascript -e 'tell application "Ghostty" to perform action "reload_config" on focused terminal of selected tab of front window' >/dev/null 2>&1 \
+  #
+  # NOTE: do not use `pgrep -x ghostty` here. macOS pgrep excludes its own
+  # ancestors by default, and this script normally runs *inside* a Ghostty
+  # shell, so the check always failed and the reload was silently skipped.
+  # `pgrep -a` (include ancestors) fixes it; `is running` is a portable check
+  # that does not launch the app either.
+  if [ "$(uname -s)" = "Darwin" ] \
+    && [ "$(osascript -e 'application "Ghostty" is running' 2>/dev/null)" = "true" ]; then
+    # reload_config is app-wide; any terminal works as the target.
+    osascript -e 'tell application "Ghostty" to perform action "reload_config" on first terminal' >/dev/null 2>&1 \
       || echo "Ghostty is running but reload failed; press cmd+shift+, to reload" >&2
   fi
 }
