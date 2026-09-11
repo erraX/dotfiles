@@ -1,0 +1,299 @@
+diff --git a/src/app/input/copy_mode.rs b/src/app/input/copy_mode.rs
+index 967d8d3..afa6043 100644
+--- a/src/app/input/copy_mode.rs
++++ b/src/app/input/copy_mode.rs
+@@ -967,6 +967,140 @@ mod tests {
+         assert_eq!(copy_mode.cursor_row, 1);
+     }
+ 
++    fn raw_key(
++        code: KeyCode,
++        modifiers: KeyModifiers,
++        kind: KeyEventKind,
++    ) -> crate::raw_input::RawInputEvent {
++        crate::raw_input::RawInputEvent::Key(TerminalKey::new(code, modifiers).with_kind(kind))
++    }
++
++    #[tokio::test]
++    async fn copy_mode_held_ctrl_u_repeats_scroll() {
++        let bytes = numbered_lines_bytes(64);
++        let (mut app, pane_id) = app_with_copy_scrollback(&bytes);
++        app.state.enter_copy_mode(&app.terminal_runtimes);
++        assert_eq!(copy_mode_offset_from_bottom(&app, pane_id), 0);
++
++        let press = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('u'),
++                KeyModifiers::CONTROL,
++                KeyEventKind::Press,
++            ))
++            .await;
++        let after_press = copy_mode_offset_from_bottom(&app, pane_id);
++        assert!(press);
++        assert!(after_press > 0);
++
++        let repeat = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('u'),
++                KeyModifiers::CONTROL,
++                KeyEventKind::Repeat,
++            ))
++            .await;
++        let after_repeat = copy_mode_offset_from_bottom(&app, pane_id);
++        assert!(repeat);
++        assert!(after_repeat > after_press);
++
++        let release = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('u'),
++                KeyModifiers::CONTROL,
++                KeyEventKind::Release,
++            ))
++            .await;
++        assert!(!release);
++        assert_eq!(copy_mode_offset_from_bottom(&app, pane_id), after_repeat);
++        assert_eq!(app.state.mode, Mode::Copy);
++    }
++
++    #[tokio::test]
++    async fn copy_mode_exit_key_repeat_does_not_leak_into_terminal() {
++        let bytes = numbered_lines_bytes(64);
++        let (mut app, _) = app_with_copy_scrollback(&bytes);
++        app.state.enter_copy_mode(&app.terminal_runtimes);
++
++        let press = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('q'),
++                KeyModifiers::empty(),
++                KeyEventKind::Press,
++            ))
++            .await;
++        assert!(press);
++        assert_eq!(app.state.mode, Mode::Terminal);
++
++        let repeat = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('q'),
++                KeyModifiers::empty(),
++                KeyEventKind::Repeat,
++            ))
++            .await;
++        assert!(!repeat);
++
++        let release = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('q'),
++                KeyModifiers::empty(),
++                KeyEventKind::Release,
++            ))
++            .await;
++        assert!(!release);
++
++        let next_repeat = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char('q'),
++                KeyModifiers::empty(),
++                KeyEventKind::Repeat,
++            ))
++            .await;
++        assert!(next_repeat);
++    }
++
++    #[tokio::test]
++    async fn key_pressed_in_prefix_mode_does_not_repeat_inside_copy_mode() {
++        let bytes = numbered_lines_bytes(64);
++        let (mut app, _) = app_with_copy_scrollback(&bytes);
++
++        // `prefix+space` enters copy mode; a still-held space must not start
++        // toggling a selection inside copy mode.
++        app.state.mode = Mode::Prefix;
++        app.note_repeat_press((KeyCode::Char(' '), KeyModifiers::empty()));
++        app.state.enter_copy_mode(&app.terminal_runtimes);
++        assert_eq!(app.state.mode, Mode::Copy);
++        assert!(app.state.copy_mode.expect("copy mode").selection.is_none());
++
++        let repeat = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char(' '),
++                KeyModifiers::empty(),
++                KeyEventKind::Repeat,
++            ))
++            .await;
++        assert!(!repeat);
++        assert!(app.state.copy_mode.expect("copy mode").selection.is_none());
++
++        // Once released and pressed again inside copy mode, it behaves normally.
++        app.handle_raw_input_event(raw_key(
++            KeyCode::Char(' '),
++            KeyModifiers::empty(),
++            KeyEventKind::Release,
++        ))
++        .await;
++        let press = app
++            .handle_raw_input_event(raw_key(
++                KeyCode::Char(' '),
++                KeyModifiers::empty(),
++                KeyEventKind::Press,
++            ))
++            .await;
++        assert!(press);
++        assert!(app.state.copy_mode.expect("copy mode").selection.is_some());
++    }
++
+     #[tokio::test]
+     async fn copy_mode_q_exits_and_returns_to_bottom_after_scrollback() {
+         let bytes = numbered_lines_bytes(64);
+diff --git a/src/app/mod.rs b/src/app/mod.rs
+index 146f5cc..ae605ff 100644
+--- a/src/app/mod.rs
++++ b/src/app/mod.rs
+@@ -123,6 +123,8 @@ pub struct App {
+     pub(crate) last_render_at: Option<Instant>,
+     pub(crate) suppressed_repeat_keys:
+         HashSet<(crossterm::event::KeyCode, crossterm::event::KeyModifiers)>,
++    pub(crate) copy_mode_repeat_keys:
++        HashSet<(crossterm::event::KeyCode, crossterm::event::KeyModifiers)>,
+     pub render_notify: Arc<Notify>,
+     pub render_dirty: Arc<AtomicBool>,
+     pub(crate) full_redraw_pending: bool,
+@@ -185,6 +187,54 @@ fn repeat_key_identity(
+     (key.code, key.modifiers)
+ }
+ 
++impl App {
++    /// Record a key press for held-key repeat gating.
++    ///
++    /// Repeats are only replayed in the mode that saw the original press:
++    /// terminal mode (so shells get continuous input) and copy mode (so
++    /// `ctrl+d`/`ctrl+u`/`j`/`k` can be held to scroll). Repeats of keys
++    /// pressed in any other mode are dropped so that modal close/confirm
++    /// keys never leak into the shell.
++    pub(crate) fn note_repeat_press(
++        &mut self,
++        key_id: (crossterm::event::KeyCode, crossterm::event::KeyModifiers),
++    ) {
++        match self.state.mode {
++            Mode::Terminal => {
++                self.suppressed_repeat_keys.remove(&key_id);
++                self.copy_mode_repeat_keys.remove(&key_id);
++            }
++            Mode::Copy => {
++                self.suppressed_repeat_keys.insert(key_id);
++                self.copy_mode_repeat_keys.insert(key_id);
++            }
++            _ => {
++                self.suppressed_repeat_keys.insert(key_id);
++                self.copy_mode_repeat_keys.remove(&key_id);
++            }
++        }
++    }
++
++    pub(crate) fn should_handle_repeat(
++        &self,
++        key_id: &(crossterm::event::KeyCode, crossterm::event::KeyModifiers),
++    ) -> bool {
++        match self.state.mode {
++            Mode::Terminal => !self.suppressed_repeat_keys.contains(key_id),
++            Mode::Copy => self.copy_mode_repeat_keys.contains(key_id),
++            _ => false,
++        }
++    }
++
++    pub(crate) fn note_repeat_release(
++        &mut self,
++        key_id: &(crossterm::event::KeyCode, crossterm::event::KeyModifiers),
++    ) {
++        self.suppressed_repeat_keys.remove(key_id);
++        self.copy_mode_repeat_keys.remove(key_id);
++    }
++}
++
+ fn auto_updates_enabled(_no_session: bool) -> bool {
+     // Auto update checks are intentionally disabled.
+     false
+@@ -631,6 +681,7 @@ impl App {
+             persist_pane_history: config.experimental.pane_history,
+             last_render_at: None,
+             suppressed_repeat_keys: HashSet::new(),
++            copy_mode_repeat_keys: HashSet::new(),
+             api_rx,
+             event_hub,
+             last_focus,
+@@ -1362,25 +1413,26 @@ impl App {
+                     let key_id = repeat_key_identity(&key);
+                     match key.kind {
+                         crossterm::event::KeyEventKind::Press => {
++                            self.note_repeat_press(key_id);
+                             if self.state.mode == Mode::Terminal {
+-                                self.suppressed_repeat_keys.remove(&key_id);
+                                 self.handle_terminal_key_headless(key);
+                             } else {
+-                                self.suppressed_repeat_keys.insert(key_id);
+                                 self.handle_non_terminal_key(key);
+                             }
+                         }
+                         crossterm::event::KeyEventKind::Repeat => {
+-                            if self.state.mode == Mode::Terminal
+-                                && !self.suppressed_repeat_keys.contains(&key_id)
+-                            {
+-                                self.handle_terminal_key_headless(key);
++                            if self.should_handle_repeat(&key_id) {
++                                if self.state.mode == Mode::Terminal {
++                                    self.handle_terminal_key_headless(key);
++                                } else {
++                                    self.handle_non_terminal_key(key);
++                                }
+                             }
+-                            // Repeats in non-terminal modes are ignored
++                            // Repeats in other non-terminal modes are ignored
+                             // (same as monolithic behavior).
+                         }
+                         crossterm::event::KeyEventKind::Release => {
+-                            self.suppressed_repeat_keys.remove(&key_id);
++                            self.note_repeat_release(&key_id);
+                         }
+                     }
+                 }
+diff --git a/src/app/runtime.rs b/src/app/runtime.rs
+index 08f884a..7535327 100644
+--- a/src/app/runtime.rs
++++ b/src/app/runtime.rs
+@@ -3,7 +3,7 @@ use std::time::{Duration, Instant};
+ use crossterm::terminal;
+ 
+ use super::{
+-    auto_updates_enabled, repeat_key_identity, App, Mode, AGENT_MODEL_REFRESH_INTERVAL,
++    auto_updates_enabled, repeat_key_identity, App, AGENT_MODEL_REFRESH_INTERVAL,
+     ANIMATION_INTERVAL, AUTO_UPDATE_CHECK_INTERVAL, GIT_REMOTE_STATUS_REFRESH_INTERVAL,
+     MIN_RENDER_INTERVAL, RESIZE_POLL_INTERVAL, SELECTION_AUTOSCROLL_INTERVAL,
+ };
+@@ -109,18 +109,12 @@ impl App {
+                 let key_id = repeat_key_identity(&key);
+                 match key.kind {
+                     crossterm::event::KeyEventKind::Press => {
+-                        if self.state.mode == Mode::Terminal {
+-                            self.suppressed_repeat_keys.remove(&key_id);
+-                        } else {
+-                            self.suppressed_repeat_keys.insert(key_id);
+-                        }
++                        self.note_repeat_press(key_id);
+                         self.handle_key(key).await;
+                         true
+                     }
+                     crossterm::event::KeyEventKind::Repeat => {
+-                        if self.state.mode == Mode::Terminal
+-                            && !self.suppressed_repeat_keys.contains(&key_id)
+-                        {
++                        if self.should_handle_repeat(&key_id) {
+                             self.handle_key(key).await;
+                             true
+                         } else {
+@@ -128,7 +122,7 @@ impl App {
+                         }
+                     }
+                     crossterm::event::KeyEventKind::Release => {
+-                        self.suppressed_repeat_keys.remove(&key_id);
++                        self.note_repeat_release(&key_id);
+                         false
+                     }
+                 }
