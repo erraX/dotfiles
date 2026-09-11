@@ -6,6 +6,7 @@ rows = [
     { token = "agent", fg = "#aeb7a6", dim = false },
     { token = "$profile", fg = "#a7c080", dim = false },
     { token = "$elapsed", fg = "#dbbc7f", bold = true, dim = false },
+    { token = "$session", fg = "#a7c080", dim = false },
   ],
 ]
 

@@ -1,3 +1,4 @@
+onboarding = false
 # Herdr base config — everything EXCEPT theme colors.
 # `sth set <theme>` concatenates this file + themes/<theme>.toml into config.toml.
 # Edit THIS file (not config.toml) for keys/ui/terminal changes; config.toml is generated.
