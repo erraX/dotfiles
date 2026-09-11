@@ -137,13 +137,23 @@ apply_codex_theme() {
 }
 
 # Usage: apply_pi_theme <pi theme name> <repo|npm package spec>
-# Repo-owned themes are symlinked into pi's global themes directory; the rest
-# come from pi packages installed via `pi install <spec>`.
+#
+# Live switching: pi does not watch settings.json, but it does hot-reload the
+# *active custom theme file* in ~/.pi/agent/themes/. So settings.json is pinned
+# to theme "current" and every switch atomically replaces
+# ~/.pi/agent/themes/current.json with a copy of the real theme; running
+# sessions started with "current" repaint within ~100ms. Sources:
+#   repo      -> themes/pi/<name>.json
+#   npm:<pkg> -> ~/.pi/agent/npm/node_modules/<pkg>/themes/<name>.json
+PI_LIVE_THEME="current"
+
 apply_pi_theme() {
   local pi_theme="$1"
   local provider="$2"
   local pi_agent_dir="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
   local settings_file="$pi_agent_dir/settings.json"
+  local target="$pi_agent_dir/themes/${PI_LIVE_THEME}.json"
+  local source pkg pkg_dir temp_file
 
   command -v python3 >/dev/null 2>&1 || {
     echo "Cannot switch pi theme: python3 is not installed" >&2
@@ -156,17 +166,60 @@ apply_pi_theme() {
   }
 
   if [ "$provider" = "repo" ]; then
-    mkdir -p "$pi_agent_dir/themes" || return 1
-    ensure_theme_link "$THEMES_DIR/pi/${pi_theme}.json" \
-      "$pi_agent_dir/themes/${pi_theme}.json" || return 1
-  elif ! grep -Fq "\"${provider}\"" "$settings_file"; then
-    echo "Skip pi theme: install it first with: pi install ${provider}" >&2
-    return 0
+    source="$THEMES_DIR/pi/${pi_theme}.json"
+  else
+    pkg="${provider#npm:}"
+    pkg_dir="$pi_agent_dir/npm/node_modules/$pkg"
+    if ! grep -Fq "\"${provider}\"" "$settings_file" || [ ! -d "$pkg_dir" ]; then
+      echo "Skip pi theme: install it first with: pi install ${provider}" >&2
+      return 0
+    fi
+    source="$pkg_dir/themes/${pi_theme}.json"
+    if [ ! -f "$source" ]; then
+      # Package may declare a non-standard pi.themes dir; search it.
+      source=$(find "$pkg_dir" -name "${pi_theme}.json" -not -path '*/node_modules/*/node_modules/*' 2>/dev/null | head -n 1)
+    fi
   fi
 
-  python3 "$THEMES_DIR/update_theme_configs.py" pi \
-    --file "$settings_file" --theme "$pi_theme" || return 1
-  echo "Switch pi theme to $pi_theme (new sessions)"
+  [ -n "$source" ] && [ -f "$source" ] || {
+    echo "Missing pi theme: $pi_theme ($provider)" >&2
+    return 1
+  }
+  mkdir -p "$pi_agent_dir/themes" || return 1
+  # Copy with "name" rewritten to the live theme name: pi registers custom
+  # themes by their JSON name, so this keeps /settings showing (and
+  # re-selecting) "current" instead of silently persisting the real name and
+  # unpinning settings.json.
+  temp_file=$(mktemp "${target}.XXXXXX") || return 1
+  python3 - "$source" "$temp_file" "$PI_LIVE_THEME" <<'EOF' || {
+import json, sys
+src, dst, live_name = sys.argv[1:4]
+with open(src, encoding="utf-8") as f:
+    data = json.load(f)
+if not isinstance(data, dict) or "colors" not in data:
+    sys.exit(f"not a pi theme: {src}")
+# Theme schema has additionalProperties=false, so only "name" is rewritten.
+data["name"] = live_name
+with open(dst, "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
+    f.write("\n")
+EOF
+    echo "Cannot prepare pi theme from $source" >&2
+    unlink "$temp_file" 2>/dev/null || true
+    return 1
+  }
+  mv "$temp_file" "$target" || {
+    unlink "$temp_file" 2>/dev/null || true
+    return 1
+  }
+
+  # Pin settings.json to the live theme once; later switches only touch the file.
+  if ! grep -Eq "\"theme\"[[:space:]]*:[[:space:]]*\"${PI_LIVE_THEME}\"" "$settings_file"; then
+    python3 "$THEMES_DIR/update_theme_configs.py" pi \
+      --file "$settings_file" --theme "$PI_LIVE_THEME" || return 1
+    echo "Pin pi settings.json theme to \"$PI_LIVE_THEME\" (sessions started before this need a restart once)"
+  fi
+  echo "Switch pi theme to $pi_theme (live via themes/${PI_LIVE_THEME}.json)"
 }
 
 apply_vscode_theme() {
