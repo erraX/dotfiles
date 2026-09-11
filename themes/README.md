@@ -24,12 +24,10 @@ The complete theme profiles (the light ones plus Rosé Pine Moon) cover:
 
 ## Partial dark profiles (Ghostty, Herdr, Neovim only)
 
-`kanagawa-dragon`, `catppuccin-{latte,frappe,macchiato,mocha}`, `terafox`,
-`nordfox` and `gruvbox-material` (dark medium) currently switch only Ghostty,
-Herdr and Neovim; kitty, tmux, fzf, Lazygit, Yazi, Codex, pi and VS Code keep whatever
+`catppuccin-frappe` and `nordfox` currently switch only Ghostty, Herdr and
+Neovim; kitty, tmux, fzf, Lazygit, Yazi, Codex, pi and VS Code keep whatever
 was active before. Ghostty uses its built-in themes, Neovim the upstream
-plugins (`catppuccin/nvim`, `EdenEast/nightfox.nvim`,
-`sainnhe/gruvbox-material`, `rebelot/kanagawa.nvim`), and the Herdr
+plugins (`catppuccin/nvim`, `EdenEast/nightfox.nvim`), and the Herdr
 `[theme.custom]` fragments copy the palettes straight from those plugins'
 palette sources since Herdr ships no matching built-ins.
 
