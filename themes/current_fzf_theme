@@ -1,6 +1,6 @@
-# Everforest Dark Medium (fzf)
+# Rosé Pine Dawn (fzf)
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
-  --color=fg:#d3c6aa,bg:#2d353b,hl:#7fbbb3 \
-  --color=fg+:#d3c6aa,bg+:#343f44,hl+:#83c092 \
-  --color=info:#7fbbb3,prompt:#dbbc7f,pointer:#d699b6,marker:#a7c080,spinner:#83c092 \
-  --color=header:#859289,border:#4f585e"
+  --color=fg:#464261,bg:#faf4ed,hl:#286983 \
+  --color=fg+:#464261,bg+:#dfdad9,hl+:#907aa9 \
+  --color=info:#56949f,prompt:#907aa9,pointer:#b4637a,marker:#286983,spinner:#56949f \
+  --color=header:#797593,border:#cecacd"
