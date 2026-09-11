@@ -1,0 +1,6 @@
+{
+  "_comment": "Upstream maps toolSuccessBg to Tokyo Night's diff-added highlight (diffAddBg), which pops out of the text flow. Use bgDark, the same layer as userMessageBg and toolPendingBg; errors keep diffRemoveBg.",
+  "colors": {
+    "toolSuccessBg": "bgDark"
+  }
+}

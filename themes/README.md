@@ -76,8 +76,9 @@ again to refresh the copy.
 
 Small tweaks to package themes live in `pi/overrides/<theme>.json`: a partial
 theme whose `vars`/`colors`/`export` keys are merged over the upstream JSON at
-switch time (e.g. `everforest-dark-medium` moves the tool-call blocks from
-Everforest's diff-highlight `bg_green`/`bg2` to the neutral `bg1` layer).
+switch time (e.g. `everforest-dark-medium` and `tokyonight` move the tool-call
+blocks off their diff-highlight backgrounds onto the same layer as user
+messages).
 Upstream stays the source of truth; the override is validated against the
 theme's `vars` so a typo fails the switch instead of producing a broken theme.
 
