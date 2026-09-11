@@ -9,9 +9,11 @@
 
 font-family        = Iosevka Term
 font-style         = Light
-font-style-bold    = Bold
+# Body is Light, so "Bold" (three weights up) shouts; one step up is enough
+# for pi's tool names / headings, lazygit, etc. Bold-italic follows suit.
+font-style-bold    = Regular
 font-style-italic  = Light Italic
-font-style-bold-italic = Bold Italic
+font-style-bold-italic = Italic
 font-size          = 16
 # kitty: disable_ligatures cursor -> Ghostty has no cursor-only mode; keep ligatures on.
 # Uncomment to disable ligatures entirely:
@@ -46,8 +48,10 @@ window-padding-x       = 4
 window-padding-y       = 4
 window-padding-balance = true
 window-padding-color   = background
-# "tabs" merges the tab bar into the titlebar; falls back to hidden when only one tab.
-macos-titlebar-style   = tabs
+# "hidden": no titlebar at all; with >1 tab only the slim native tab bar shows.
+# ("tabs" merges tab bar + titlebar into one ~52px strip — too tall.)
+# Window can still be dragged with option+drag; traffic lights are gone.
+macos-titlebar-style   = hidden
 macos-window-shadow    = true
 window-save-state      = always
 confirm-close-surface  = true
