@@ -86,3 +86,11 @@ rows = [
 # Rosé Pine Dawn, using Herdr's built-in light palette.
 name = "rose-pine-dawn"
 auto_switch = false
+
+[theme.custom]
+# Contrast bump over the built-in palette; matches the terminal/pi tweaks.
+active_row_bg = "#cfc6d9"
+selection_bg = "#cfc6d9"
+text = "#464261"
+subtext0 = "#575279"
+overlay1 = "#8b869b"

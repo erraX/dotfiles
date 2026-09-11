@@ -1,0 +1,13 @@
+{
+  "_comment": "Upstream Rosé Pine Dawn puts cursor/borders/selection/panel backgrounds on highlight_low/med/high (#f4ede8/#dfdad9/#cecacd), which sit at 1.05-1.48:1 against the #faf4ed base and are near-invisible in a terminal. Press each highlight step one notch darker, align text with the terminal foreground (#464261), and use the same #cfc6d9 selection tint as the Ghostty/kitty/Herdr themes. Color-role mapping is left to upstream.",
+  "vars": {
+    "text": "#464261",
+    "muted": "#8b869b",
+    "hlHigh": "#9893a5",
+    "hlMed": "#cfc6d9",
+    "surface": "#ede3d8",
+    "overlay": "#e9ded2",
+    "pineBg": "#dce9e2",
+    "roseBg": "#f3dfe3"
+  }
+}

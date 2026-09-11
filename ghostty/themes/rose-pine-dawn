@@ -2,9 +2,9 @@
 foreground = #464261
 background = #faf4ed
 selection-foreground = #464261
-selection-background = #dfdad9
-cursor-color = #cecacd
-cursor-text = #464261
+selection-background = #cfc6d9
+cursor-color = #575279
+cursor-text = #faf4ed
 palette = 0=#f2e9e1
 palette = 8=#9893a5
 palette = 1=#b4637a
