@@ -21,7 +21,9 @@ font-size          = 16
 
 # ===== Cursor =====
 
-cursor-style        = bar
+# Block instead of bar: light themes (Rosé Pine Dawn) give the bar too little
+# contrast to find. Block reads as a filled cell regardless of cursor color.
+cursor-style        = block
 cursor-style-blink  = false
 # kitty default: cursor takes theme color. Keep that.
 
@@ -68,7 +70,9 @@ macos-secure-input-indication = true
 # ===== Shell integration =====
 
 shell-integration = detect
-shell-integration-features = cursor,no-sudo,title,path
+# no-cursor: the "cursor" feature forces a bar at the shell prompt, which would
+# override cursor-style = block above.
+shell-integration-features = no-cursor,no-sudo,title,path
 
 # ===== Keybindings =====
 #
