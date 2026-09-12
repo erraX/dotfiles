@@ -1,6 +1,23 @@
-# Rosé Pine Dawn (fzf)
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
-  --color=fg:#464261,bg:#faf4ed,hl:#286983 \
-  --color=fg+:#464261,bg+:#dfdad9,hl+:#907aa9 \
-  --color=info:#56949f,prompt:#907aa9,pointer:#b4637a,marker:#286983,spinner:#56949f \
-  --color=header:#797593,border:#cecacd"
+  --highlight-line \
+  --info=inline-right \
+  --ansi \
+  --layout=reverse \
+  --border=none \
+  --color=bg+:#2e3c64 \
+  --color=bg:#1f2335 \
+  --color=border:#29a4bd \
+  --color=fg:#c0caf5 \
+  --color=gutter:#1f2335 \
+  --color=header:#ff9e64 \
+  --color=hl+:#2ac3de \
+  --color=hl:#2ac3de \
+  --color=info:#545c7e \
+  --color=marker:#ff007c \
+  --color=pointer:#ff007c \
+  --color=prompt:#2ac3de \
+  --color=query:#c0caf5:regular \
+  --color=scrollbar:#29a4bd \
+  --color=separator:#ff9e64 \
+  --color=spinner:#ff007c \
+"

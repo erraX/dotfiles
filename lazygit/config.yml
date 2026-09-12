@@ -1,37 +1,32 @@
 git:
   pagers:
+    # ANSI lets Delta use the official Tokyo Night terminal palette.
     - colorArg: always
-      pager: delta --paging=never --line-numbers --light --syntax-theme=rose-pine-dawn
+      pager: delta --paging=never --line-numbers --syntax-theme=ansi
 gui:
+  nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#286983"
-      - bold
+      - "#ff9e64"
+      - "bold"
     inactiveBorderColor:
-      - "#cecacd"
-    defaultFgColor:
-      - "#464261"
-    optionsTextColor:
-      - "#907aa9"
-    selectedLineBgColor:
-      - "#dfdad9"
-    selectedRangeBgColor:
-      - "#cecacd"
-    unstagedChangesColor:
-      - "#b4637a"
-    cherryPickedCommitBgColor:
-      - "#dfdad9"
-    cherryPickedCommitFgColor:
-      - "#286983"
+      - "#29a4bd"
     searchingActiveBorderColor:
-      - "#9a6700"
-      - bold
-  authorColors:
-    "*": "#464261"
-    "default": "#464261"
-    "A": "#286983"
-    "B": "#56949f"
-    "C": "#b4637a"
-    "D": "#907aa9"
-    "E": "#797593"
-    "F": "#9a6700"
+      - "#ff9e64"
+      - "bold"
+    optionsTextColor:
+      - "#7aa2f7"
+    selectedLineBgColor:
+      - "#2e3c64"
+    cherryPickedCommitFgColor:
+      - "#7aa2f7"
+    cherryPickedCommitBgColor:
+      - "#bb9af7"
+    markedBaseCommitFgColor:
+      - "#7aa2f7"
+    markedBaseCommitBgColor:
+      - "#e0af68"
+    unstagedChangesColor:
+      - "#db4b4b"
+    defaultFgColor:
+      - "#c0caf5"
