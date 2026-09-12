@@ -881,6 +881,23 @@ require('lazy').setup({
       vim.lsp.enable { 'vtsls', 'vue_ls' }
       vim.lsp.enable 'gopls'
       vim.lsp.enable 'perlnavigator'
+
+      -- Pyright does not auto-discover a project-local `.venv` (e.g. created by uv);
+      -- without this it falls back to the `python` on PATH and reports unresolved imports.
+      vim.lsp.config('pyright', {
+        before_init = function(_, config)
+          local root = config.root_dir
+          if not root then
+            return
+          end
+          local py = root .. '/.venv/bin/python'
+          if vim.uv.fs_stat(py) then
+            config.settings = vim.tbl_deep_extend('force', config.settings or {}, {
+              python = { pythonPath = py },
+            })
+          end
+        end,
+      })
       vim.lsp.enable 'pyright'
 
       -- ESLint is configured above in `servers` and enabled via mason-lspconfig handler
