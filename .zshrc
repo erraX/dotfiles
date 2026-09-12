@@ -82,6 +82,9 @@ alias idvcs='cd ~/workspace/booking/b-mfes-2/component-services/verification-fro
 alias cc='claude'
 alias ccd='claude --dangerously-skip-permissions --verbose -p'
 alias ccp='claude --dangerously-skip-permissions'
+alias m2vi='python3 /Users/mni/workspace/booking/extranet-mason-mfe-modernization/scripts/install_skill.py'
+alias cxl='codex resume --last'
+alias cx='codex'
 
 
 # alias cd
@@ -102,6 +105,9 @@ alias snladm='ssh -NL 9211:localhost:9211 mni-adm.dev.booking.com'
 
 alias k='kill -9'
 
+alias se='python3 /Users/mni/workspace/booking/extranet-mason-mfe-modernization/scripts/skill_eval.py'
+alias codex='command codex -m gpt-6-astra -c model_reasoning_effort="max"'
+alias se2='bun /Users/mni/workspace/booking/extranet-mason-mfe-modernization/eval2/m2v-eval.ts'
 
 # eval $(thefuck --alias)
 # eval "$(zoxide init --cmd cd zsh)"
@@ -242,14 +248,18 @@ function sgpt() {
 # Pi
 export PATH="/Users/mni/.local/share/fnm/node-versions/v24.11.0/installation/bin:$PATH"
 
-function pi() {
-	local token
-	token=$(bk auth:issue-token 2>/dev/null) || {
-		bk auth:login --skip-okta-auth > /dev/null 2>&1
-		token=$(bk auth:issue-token 2>/dev/null)
-	}
-	ANTHROPIC_API_KEY="$token" command pi "$@"
-}
+# function pi() {
+# 	local token
+# 	token=$(bk auth:issue-token 2>/dev/null) || {
+# 		bk auth:login --skip-okta-auth > /dev/null 2>&1
+# 		token=$(bk auth:issue-token 2>/dev/null)
+# 	}
+# 	ANTHROPIC_API_KEY="$token" command pi "$@"
+# }
 
 export SRC_ENDPOINT=https://sourcegraph.booking.com
 export GLEAN_SERVER_URL=booking-prod-be.glean.com
+
+export BK_DISABLE_EVENTS=true
+
+secd() { cd "$(se path "${1:-latest}" "${2:-worktree}")"; }
