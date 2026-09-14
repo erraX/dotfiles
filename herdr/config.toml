@@ -76,8 +76,8 @@ key = "prefix+c"
 type = "popup"
 command = "/opt/homebrew/bin/lazygit"
 description = "open lazygit"
-width = "90%"
-height = "85%"
+width = "95%"
+height = "95%"
 
 [[keys.command]]
 key = "prefix+f"
