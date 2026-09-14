@@ -66,6 +66,34 @@ description = "pick agent"
 width = 68
 height = "70%"
 
+# Temporary tools in the focused pane's working directory; q returns to it.
+# prefix+c is free because new_tab is explicitly bound to prefix+n above.
+[[keys.command]]
+key = "prefix+c"
+type = "popup"
+command = "/opt/homebrew/bin/lazygit"
+description = "open lazygit"
+width = "90%"
+height = "85%"
+
+[[keys.command]]
+key = "prefix+f"
+type = "popup"
+# Yazi's fzf plugin inherits its environment; refresh colors on each launch.
+command = "/Users/mni/.config/themes/with-fzf-theme.sh /opt/homebrew/bin/yazi"
+description = "open yazi"
+width = "90%"
+height = "85%"
+
+# Disposable interactive shell; exit/Ctrl+d closes it (not a persistent toggle).
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "/Users/mni/.config/themes/with-fzf-theme.sh /bin/zsh -i"
+description = "open scratch shell"
+width = "85%"
+height = "75%"
+
 [experimental]
 switch_ascii_input_source_in_prefix = true
 
