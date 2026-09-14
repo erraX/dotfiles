@@ -670,6 +670,9 @@ set_theme() {
       apply_codex_theme "$theme" || return 1
       apply_vscode_theme "Rosé Pine Moon" || return 1
       ;;
+    "everforest")
+      apply_yazi_theme "$theme" "everforest-dark-medium" || return 1
+      ;;
     "everforest-light-hard"|"everforest-light-medium"|"everforest-light-soft")
       local everforest_variant="${theme##*-}"
       apply_yazi_theme "$theme" || return 1

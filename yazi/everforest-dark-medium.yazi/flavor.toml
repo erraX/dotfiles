@@ -1,0 +1,104 @@
+# vim:fileencoding=utf-8
+# Everforest Dark Medium for Yazi.
+# Everforest dark medium palette, matching the terminal theme.
+
+[app]
+overall = { bg = "#2d353b" }
+
+[mgr]
+cwd = { fg = "#7fbbb3" }
+find_keyword = { fg = "#dbbc7f", bold = true, underline = true }
+find_position = { fg = "#83c092", bg = "reset", bold = true }
+marker_copied = { fg = "#a7c080", bg = "#a7c080" }
+marker_cut = { fg = "#e67e80", bg = "#e67e80" }
+marker_marked = { fg = "#d699b6", bg = "#d699b6" }
+marker_selected = { fg = "#dbbc7f", bg = "#dbbc7f" }
+count_copied = { fg = "#2d353b", bg = "#a7c080", bold = true }
+count_cut = { fg = "#2d353b", bg = "#e67e80", bold = true }
+count_selected = { fg = "#2d353b", bg = "#dbbc7f", bold = true }
+border_symbol = "│"
+border_style = { fg = "#859289" }
+
+[indicator]
+parent = { fg = "#859289", bg = "#3d484d" }
+current = { fg = "#7fbbb3", bg = "#343f44" }
+preview = { fg = "#d3c6aa", bg = "#3d484d" }
+padding = { open = " ", close = " " }
+
+[tabs]
+active = { fg = "#2d353b", bg = "#7fbbb3", bold = true }
+inactive = { fg = "#d3c6aa", bg = "#343f44" }
+sep_inner = { open = " ", close = " " }
+sep_outer = { open = " ", close = " " }
+
+[mode]
+normal_main = { fg = "#2d353b", bg = "#7fbbb3", bold = true }
+normal_alt = { fg = "#7fbbb3", bg = "#343f44" }
+select_main = { fg = "#2d353b", bg = "#a7c080", bold = true }
+select_alt = { fg = "#a7c080", bg = "#425047" }
+unset_main = { fg = "#2d353b", bg = "#dbbc7f", bold = true }
+unset_alt = { fg = "#dbbc7f", bg = "#343f44" }
+
+[status]
+overall = { fg = "#2d353b", bg = "#7fbbb3" }
+sep_left = { open = " ", close = " " }
+sep_right = { open = " ", close = " " }
+perm_sep = { fg = "#9da9a0" }
+perm_type = { fg = "#2d353b", bold = true }
+perm_read = { fg = "#425047" }
+perm_write = { fg = "#514045" }
+perm_exec = { fg = "#475258" }
+progress_label = { fg = "#2d353b", bold = true }
+progress_normal = { fg = "#2d353b", bg = "#83c092" }
+progress_error = { fg = "#2d353b", bg = "#e67e80" }
+
+[which]
+cols = 2
+mask = { bg = "#343f44" }
+cand = { fg = "#7fbbb3", bold = true }
+rest = { fg = "#9da9a0" }
+desc = { fg = "#d699b6" }
+separator = " -> "
+separator_style = { fg = "#859289" }
+
+[confirm]
+border = { fg = "#7fbbb3" }
+title = { fg = "#7fbbb3", bold = true }
+body = { fg = "#d3c6aa" }
+list = { fg = "#d3c6aa" }
+btn_yes = { fg = "#2d353b", bg = "#a7c080", bold = true }
+btn_no = { fg = "#d3c6aa", bg = "#3d484d" }
+btn_labels = [" Yes ", " No "]
+
+[input]
+border = { fg = "#7fbbb3" }
+title = { fg = "#d3c6aa", bold = true }
+value = { fg = "#d3c6aa" }
+selected = { bg = "#475258" }
+
+[pick]
+border = { fg = "#7fbbb3" }
+active = { fg = "#7fbbb3", bold = true }
+inactive = { fg = "#9da9a0" }
+
+[spot]
+border = { fg = "#7fbbb3" }
+title = { fg = "#7fbbb3", bold = true }
+tbl_col = { fg = "#83c092" }
+tbl_cell = { fg = "#d3c6aa", bg = "#475258" }
+
+[notify]
+title_info = { fg = "#7fbbb3", bold = true }
+title_warn = { fg = "#dbbc7f", bold = true }
+title_error = { fg = "#e67e80", bold = true }
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#83c092" },
+  { mime = "{audio,video}/*", fg = "#dbbc7f" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#d699b6" },
+  { mime = "application/{pdf,doc,rtf}", fg = "#a7c080" },
+  { mime = "vfs/{absent,stale}", fg = "#9da9a0" },
+  { url = "*/", fg = "#7fbbb3", bold = true },
+  { url = "*", fg = "#d3c6aa" },
+]
