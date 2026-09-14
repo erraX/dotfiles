@@ -8,11 +8,11 @@
 # ===== Fonts =====
 
 font-family        = Iosevka Term
-font-style         = Light
+font-style         = Regular
 # Body is Light, so "Bold" (three weights up) shouts; one step up is enough
 # for pi's tool names / headings, lazygit, etc. Bold-italic follows suit.
-font-style-bold    = Regular
-font-style-italic  = Light Italic
+font-style-bold    = Medium
+font-style-italic  = Regular Italic
 font-style-bold-italic = Italic
 font-size          = 16
 # kitty: disable_ligatures cursor -> Ghostty has no cursor-only mode; keep ligatures on.
