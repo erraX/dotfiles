@@ -52,6 +52,19 @@ resize_pane_left = "prefix+left"
 resize_pane_down = "prefix+down"
 resize_pane_up = "prefix+up"
 resize_pane_right = "prefix+right"
+# Default is prefix+o; moved aside so prefix+o can open the agent picker below.
+open_notification_target = "prefix+shift+o"
+
+# Sidebar-style agent picker (fzf popup). The built-in session navigator
+# (prefix+g) shows the whole workspace/tab/pane tree and isn't configurable;
+# this one renders the same two-line rows as the sidebar agents panel.
+[[keys.command]]
+key = "prefix+o"
+type = "popup"
+command = "/Users/mni/.config/herdr/agent-picker.py"
+description = "pick agent"
+width = 68
+height = "70%"
 
 [experimental]
 switch_ascii_input_source_in_prefix = true
