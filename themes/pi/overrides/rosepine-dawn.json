@@ -1,0 +1,10 @@
+{
+  "_comment": "gold: upstream Dawn gold #ea9d34 is the palette's outlier (OKLCH L.76 C.15) and measures 2.05:1 on the base, 1.91:1 on toolSuccessBg; with pi-colours highlighting bash output, whole blocks of strings/warnings turned unreadable. Ochre #a46d24 keeps the hue at the lightness/chroma of love/rose (4.0:1 / 3.7:1). The same value is used for terminal palette 3/11, nvim, lazygit, yazi, delta and Herdr. irisBg/userMessageBg: keep the iris-tinted user message background that was applied to the live theme by hand, so a switch does not drop it.",
+  "vars": {
+    "gold": "#a46d24",
+    "irisBg": "#ebe3f1"
+  },
+  "colors": {
+    "userMessageBg": "irisBg"
+  }
+}

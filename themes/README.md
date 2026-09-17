@@ -78,7 +78,7 @@ Small tweaks to package themes live in `pi/overrides/<theme>.json`: a partial
 theme whose `vars`/`colors`/`export` keys are merged over the upstream JSON at
 switch time (e.g. `everforest-dark-medium` and `tokyonight` move the tool-call
 blocks off their diff-highlight backgrounds onto the same layer as user
-messages).
+messages; `rosepine-dawn` swaps the gold, see below).
 Upstream stays the source of truth; the override is validated against the
 theme's `vars` so a typo fails the switch instead of producing a broken theme.
 
@@ -113,7 +113,18 @@ Themes come from two places:
 Upstream sources:
 
 - Kanagawa.nvim `bb85e4b` for the Lotus palette, Neovim plugin, and Kitty base
-- Rosé Pine Neovim `ff483051`, Kitty `efd4f01c`, TextMate `6d556734`, and iTerm `4801702a`
+- Rosé Pine Neovim `ff483051`, Kitty `efd4f01c`, TextMate `6d556734`, and iTerm `4801702a`.
+  One deliberate deviation: Dawn's `gold` is `#a46d24` (ochre) instead of the
+  upstream `#ea9d34`. Upstream gold is the palette's outlier (OKLCH L 0.76,
+  C 0.15 next to L 0.60-0.70, C 0.07-0.11 for love/rose/foam/iris) and measures
+  2.05:1 on the base, so warnings and highlighted strings were unreadable in the
+  TUIs. Ochre keeps the hue at the lightness/chroma of `love` (4.0:1). Applied to
+  terminal palette 3/11 (kitty, Ghostty, iTerm2), tmux, lazygit, the Codex/bat/delta
+  tmTheme, the Yazi flavor, Herdr (`[theme.custom] yellow`), pi
+  (`pi/overrides/rosepine-dawn.json`) and Neovim (`palette.dawn.gold`, with
+  `Search` pinned to the light upstream gold because it puts dark text on that
+  background). Gold-as-background with light text gets better, not worse.
+  VS Code (`mvllow.rose-pine`) still shows upstream gold.
 - Rosé Pine Moon: upstream `rose-pine/kitty`, `rose-pine/tm-theme` and `rose-pine/iterm`
   dist files as of 2026-09; Herdr and pi palettes hand-mapped from the official Moon
   variables since neither ships a Moon variant

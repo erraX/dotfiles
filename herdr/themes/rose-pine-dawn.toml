@@ -14,3 +14,8 @@ rows = [
 # Rosé Pine Dawn, using Herdr's built-in light palette.
 name = "rose-pine-dawn"
 auto_switch = false
+
+[theme.custom]
+# Built-in gold #ea9d34 is 2.05:1 on the base; ochre matches the terminal
+# palette 3/11, pi, nvim, lazygit, yazi and delta (see themes/README.md).
+yellow = "#a46d24"

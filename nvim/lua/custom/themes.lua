@@ -78,6 +78,16 @@ M.themes = {
       variant = 'dawn',
       dark_variant = 'moon',
       styles = { italic = false, transparency = false },
+      -- Upstream Dawn gold #ea9d34 is 2.05:1 on the base; ochre keeps the hue
+      -- at the lightness/chroma of love/rose (4.0:1). Same value as the
+      -- terminal palette 3/11, pi, lazygit, yazi, delta and Herdr.
+      palette = { dawn = { gold = '#a46d24' } },
+      highlight_groups = {
+        -- Search puts dark text on the gold: keep upstream's light gold there
+        -- (3.2:1); on ochre it would drop to 1.7:1. CurSearch/IncSearch use
+        -- base-on-gold and get better with ochre (2.1 -> 4.0:1).
+        Search = { fg = 'text', bg = '#ea9d34', blend = 20 },
+      },
     }
     vim.o.background = 'light'
     vim.cmd.colorscheme 'rose-pine-dawn'

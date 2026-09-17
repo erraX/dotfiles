@@ -24,7 +24,7 @@ gui:
     cherryPickedCommitFgColor:
       - "#286983"
     searchingActiveBorderColor:
-      - "#9a6700"
+      - "#a46d24"
       - bold
   authorColors:
     "*": "#464261"
@@ -34,4 +34,4 @@ gui:
     "C": "#b4637a"
     "D": "#907aa9"
     "E": "#797593"
-    "F": "#9a6700"
+    "F": "#a46d24"
