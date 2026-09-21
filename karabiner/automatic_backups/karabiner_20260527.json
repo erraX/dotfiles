@@ -1152,15 +1152,6 @@
                             "to": [{ "key_code": "left_command" }]
                         }
                     ]
-                },
-                {
-                    "identifiers": {
-                        "is_keyboard": true,
-                        "is_pointing_device": true,
-                        "product_id": 61439,
-                        "vendor_id": 2007
-                    },
-                    "ignore": false
                 }
             ],
             "fn_function_keys": [
